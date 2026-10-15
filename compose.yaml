@@ -9,16 +9,17 @@ services:
       - "127.0.0.1:${APP_PORT:-18081}:80"
     environment:
       CI_ENVIRONMENT: production
-      app.baseURL: ${APP_BASE_URL:-https://azrilachdi.web.id/}
-      app.indexPage: ""
-      database.default.hostname: db
-      database.default.port: "3306"
-      database.default.database: portfolio
-      database.default.username: portfolio
-      database.default.password: ${DB_PASSWORD:?Set DB_PASSWORD in the server environment file}
-      database.default.DBDriver: MySQLi
-      database.default.DBDebug: "false"
-      encryption.key: ${ENCRYPTION_KEY:?Set ENCRYPTION_KEY in the server environment file}
+      # CodeIgniter supports underscores; /bin/sh removes names containing dots.
+      app_baseURL: ${APP_BASE_URL:-https://azrilachdi.web.id/}
+      app_indexPage: ""
+      database_default_hostname: db
+      database_default_port: "3306"
+      database_default_database: portfolio
+      database_default_username: portfolio
+      database_default_password: ${DB_PASSWORD:?Set DB_PASSWORD in the server environment file}
+      database_default_DBDriver: MySQLi
+      database_default_DBDebug: "false"
+      encryption_key: ${ENCRYPTION_KEY:?Set ENCRYPTION_KEY in the server environment file}
     volumes:
       - ${DATA_DIR:-./data}/writable:/var/www/html/writable
       - ${DATA_DIR:-./data}/uploads:/var/www/html/public/uploads

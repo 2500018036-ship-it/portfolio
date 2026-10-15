@@ -102,3 +102,9 @@ sudo systemctl enable --now portfolio-deploy.timer
 Konfigurasikan proxy host untuk `azrilachdi.web.id` menuju `portfolio-web:80`.
 Nginx Azure harus meneruskan `Host` dan `X-Forwarded-Proto: https` melalui
 WireGuard. Sertifikat TLS dikelola di Azure.
+
+Cookie sesi produksi menggunakan `Secure` dan `HttpOnly`. Pemeriksaan HTTP
+internal harus menyertakan header `X-Forwarded-Proto: https`, seperti health
+check dan workflow CI, untuk mencerminkan terminasi HTTPS di proxy. Domain
+`www` diarahkan langsung ke `https://azrilachdi.web.id/` di Azure. Proxy Azure
+juga mengubah redirect HTTP dari origin menjadi HTTPS.

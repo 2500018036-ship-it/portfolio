@@ -39,7 +39,7 @@ rollback_app() {
 trap rollback_app ERR
 dc run --rm --no-deps --interactive=false app php spark migrate --all
 dc up -d --no-deps --no-build --wait --wait-timeout 180 app
-curl --fail --silent --show-error --max-time 15 "http://127.0.0.1:${APP_PORT:-18081}/" -o /dev/null
+curl --fail --silent --show-error --header 'X-Forwarded-Proto: https' --max-time 15 "http://127.0.0.1:${APP_PORT:-18081}/" -o /dev/null
 python3 - "$ENV_FILE" "$sha" <<'PY'
 import os,pathlib,sys
 path=pathlib.Path(sys.argv[1])

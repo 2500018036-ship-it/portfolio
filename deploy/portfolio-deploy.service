@@ -1,0 +1,10 @@
+[Unit]
+Description=Deploy portfolio after successful GitHub Actions CI
+Wants=network-online.target docker.service
+After=network-online.target docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/portfolio-poll
+TimeoutStartSec=1800
+UMask=0077

@@ -1,0 +1,6 @@
+GITHUB_REPO=2500018036-ship-it/portfolio
+REPO_DIR=/mnt/data/docker-compose/portfolio/repository
+ENV_FILE=/mnt/data/docker-compose/portfolio/runtime.env
+STATE_DIR=/mnt/data/docker-compose/portfolio/state
+BACKUP_DIR=/mnt/data/docker-compose/portfolio/backups
+APP_PORT=18081

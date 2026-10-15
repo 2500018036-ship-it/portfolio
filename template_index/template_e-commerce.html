@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'AVANT-GARDE | Premium Fashion House</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #121212;
+            --color-accent: #c5a059;
+            --color-bg: #fcfcfc;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-primary);
+            overflow-x: hidden;
+        }
+
+        .serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Asymmetric Grid Classes */
+        .grid-asymmetric .product-card:nth-child(even) {
+            margin-top: 4rem;
+        }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .cart-drawer {
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .cart-drawer.open {
+            transform: translateX(0);
+        }
+
+        .quick-view-modal {
+            display: none;
+        }
+
+        .quick-view-modal.active {
+            display: flex;
+        }
+
+        .btn-premium {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .btn-premium::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 1px;
+            background: currentColor;
+            transition: width 0.3s ease;
+        }
+
+        .btn-premium:hover::after {
+            width: 100%;
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Loading Overlay -->
+    <div id="loader"
+        class="fixed inset-0 z-[100] bg-white flex items-center justify-center transition-opacity duration-700">
+        <div class="text-center">
+            <h1 class="serif text-3xl tracking-widest animate-pulse">L'AVANT-GARDE</h1>
+            <div class="mt-4 h-px w-24 bg-black mx-auto origin-left scale-x-0 transition-transform duration-1000"
+                id="loader-bar"></div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar"
+        class="fixed top-0 w-full z-50 transition-all duration-500 py-6 px-8 flex justify-between items-center bg-transparent">
+        <div class="flex gap-8 items-center">
+            <button class="hover:opacity-50 transition" onclick="toggleMenu()">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M4 8h16M4 16h10" />
+                </svg>
+            </button>
+            <div class="hidden md:flex gap-6 text-xs tracking-widest uppercase font-semibold">
+                <a href="#shop" class="btn-premium">Shop</a>
+                <a href="#category" class="btn-premium">Category</a>
+            </div>
+        </div>
+
+        <a href="#" class="serif text-2xl tracking-tighter font-bold">L'AVANT-GARDE</a>
+
+        <div class="flex gap-6 items-center">
+            <button onclick="toggleSearch()" class="hover:text-accent transition">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="9" cy="9" r="6" />
+                    <path d="M14 14l4 4" />
+                </svg>
+            </button>
+            <button onclick="toggleWishlist()" class="relative hover:text-accent transition">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path
+                        d="M10 18l-1.5-1.5C4 12 1 9.5 1 6a4.5 4.5 0 018-2.5A4.5 4.5 0 0117 6c0 3.5-3 6-7.5 10.5L10 18z" />
+                </svg>
+                <span id="wishlist-count"
+                    class="absolute -top-2 -right-2 text-[10px] bg-black text-white w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
+            </button>
+            <button onclick="toggleCart()" class="relative hover:text-accent transition">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M1 1h3l2 11h11l2-8H5M16 19a1 1 0 11-2 0 1 1 0 012 0zm-8 0a1 1 0 11-2 0 1 1 0 012 0z" />
+                </svg>
+                <span id="cart-count"
+                    class="absolute -top-2 -right-2 text-[10px] bg-black text-white w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative h-screen w-full flex items-center px-8 md:px-20 overflow-hidden bg-[#e5e5e5]">
+        <div class="z-10 max-w-2xl">
+            <h2 class="serif text-7xl md:text-9xl mb-6 leading-none reveal">The New <br><span
+                    class="italic font-normal">Standard.</span></h2>
+            <p class="text-gray-600 mb-8 max-w-sm reveal" style="transition-delay: 0.2s">Eksplorasi siluet modern dan
+                material premium yang dirancang untuk mereka yang mendefinisikan tren, bukan mengikutinya.</p>
+            <div class="flex gap-4 reveal" style="transition-delay: 0.4s">
+                <a href="#shop"
+                    class="bg-black text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-zinc-800 transition shadow-xl">Shop
+                    Collection</a>
+                <a href="#category"
+                    class="border border-black px-8 py-4 rounded-full text-sm font-semibold hover:bg-black hover:text-white transition">Browse
+                    Styles</a>
+            </div>
+        </div>
+
+        <!-- Floating Elements -->
+        <div class="absolute right-0 top-0 h-full w-1/2 hidden md:block">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-[30rem] bg-zinc-300 overflow-hidden shadow-2xl rotate-3 reveal"
+                style="transition-delay: 0.3s">
+                <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80&w=800"
+                    alt="Hero Model" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute top-1/4 right-20 w-64 h-80 bg-zinc-400 overflow-hidden shadow-xl -rotate-6 reveal"
+                style="transition-delay: 0.5s">
+                <img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&q=80&w=600"
+                    alt="Detail" class="w-full h-full object-cover">
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section id="category" class="py-24 px-8 md:px-20">
+        <div class="flex justify-between items-end mb-12">
+            <div>
+                <span class="text-xs font-bold uppercase tracking-widest text-accent">Curated Selection</span>
+                <h3 class="serif text-4xl mt-2">Pilih Kategori</h3>
+            </div>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="group relative aspect-[3/4] overflow-hidden bg-gray-100 cursor-pointer reveal">
+                <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&q=80&w=600"
+                    alt="Baju" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                <div
+                    class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition flex flex-col justify-end p-6 text-white">
+                    <p class="serif text-xl">Apparels</p>
+                    <p
+                        class="text-[10px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition duration-500">
+                        Explore items</p>
+                </div>
+            </div>
+            <div class="group relative aspect-[3/4] overflow-hidden bg-gray-100 cursor-pointer reveal"
+                style="transition-delay: 0.1s">
+                <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&q=80&w=600"
+                    alt="Sepatu" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                <div
+                    class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition flex flex-col justify-end p-6 text-white">
+                    <p class="serif text-xl">Footwear</p>
+                    <p
+                        class="text-[10px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition duration-500">
+                        Explore items</p>
+                </div>
+            </div>
+            <div class="group relative aspect-[3/4] overflow-hidden bg-gray-100 cursor-pointer reveal"
+                style="transition-delay: 0.2s">
+                <img src="https://images.unsplash.com/photo-1582552938357-32b906df40cb?auto=format&fit=crop&q=80&w=600"
+                    alt="Celana" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                <div
+                    class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition flex flex-col justify-end p-6 text-white">
+                    <p class="serif text-xl">Bottoms</p>
+                    <p
+                        class="text-[10px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition duration-500">
+                        Explore items</p>
+                </div>
+            </div>
+            <div class="group relative aspect-[3/4] overflow-hidden bg-gray-100 cursor-pointer reveal"
+                style="transition-delay: 0.3s">
+                <img src="https://images.unsplash.com/photo-1523206489230-c012c64b2b48?auto=format&fit=crop&q=80&w=600"
+                    alt="Aksesoris" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                <div
+                    class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition flex flex-col justify-end p-6 text-white">
+                    <p class="serif text-xl">Essentials</p>
+                    <p
+                        class="text-[10px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition duration-500">
+                        Explore items</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Shop / Product Listing -->
+    <section id="shop" class="py-24 px-8 md:px-20 bg-white">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 gap-4">
+            <h3 class="serif text-5xl">The Shop</h3>
+            <div class="flex gap-4 items-center overflow-x-auto pb-2 w-full md:w-auto">
+                <button class="filter-btn active text-xs font-bold border-b-2 border-black pb-1 whitespace-nowrap"
+                    data-filter="all">All Items</button>
+                <button
+                    class="filter-btn text-xs font-semibold text-gray-400 hover:text-black transition pb-1 whitespace-nowrap"
+                    data-filter="baju">Apparels</button>
+                <button
+                    class="filter-btn text-xs font-semibold text-gray-400 hover:text-black transition pb-1 whitespace-nowrap"
+                    data-filter="sepatu">Footwear</button>
+                <button
+                    class="filter-btn text-xs font-semibold text-gray-400 hover:text-black transition pb-1 whitespace-nowrap"
+                    data-filter="celana">Bottoms</button>
+                <button
+                    class="filter-btn text-xs font-semibold text-gray-400 hover:text-black transition pb-1 whitespace-nowrap"
+                    data-filter="aksesoris">Essentials</button>
+            </div>
+        </div>
+
+        <!-- Dynamic Grid -->
+        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16 grid-asymmetric">
+            <!-- Skeleton Loader State -->
+            <div class="product-card-skeleton animate-pulse">
+                <div class="aspect-[3/4] bg-gray-200 rounded-sm mb-4"></div>
+                <div class="h-4 bg-gray-200 w-2/3 mb-2"></div>
+                <div class="h-3 bg-gray-200 w-1/3"></div>
+            </div>
+            <!-- More Skeletons... -->
+        </div>
+
+        <div class="mt-24 text-center">
+            <button
+                class="px-12 py-4 border border-black hover:bg-black hover:text-white transition rounded-full text-xs font-bold uppercase tracking-widest">Load
+                More Collection</button>
+        </div>
+    </section>
+
+   
+
+    <!-- Cart Drawer -->
+    <div id="cart-drawer"
+        class="cart-drawer fixed right-0 top-0 h-full w-full md:w-[450px] bg-white z-[100] shadow-2xl flex flex-col">
+        <div class="p-8 border-b flex justify-between items-center">
+            <h3 class="serif text-2xl">Shopping Bag</h3>
+            <button onclick="toggleCart()" class="text-xs uppercase tracking-widest font-bold">Close</button>
+        </div>
+
+        <div id="cart-items" class="flex-1 overflow-y-auto p-8 space-y-8">
+            <!-- Empty State -->
+            <div class="text-center py-20 text-gray-400">
+                <p class="mb-4">Tas Anda kosong.</p>
+                <button onclick="toggleCart()"
+                    class="text-black underline text-xs uppercase font-bold tracking-widest">Start Shopping</button>
+            </div>
+        </div>
+
+        <div class="p-8 border-t bg-gray-50">
+            <div class="flex justify-between items-center mb-6">
+                <span class="text-xs font-bold uppercase tracking-widest">Total Estimatasi</span>
+                <span id="cart-total" class="serif text-xl">Rp 0</span>
+            </div>
+            <button onclick="openCheckout()"
+                class="w-full bg-black text-white py-4 text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition">Proceed
+                to Checkout</button>
+        </div>
+    </div>
+
+    <!-- Checkout Page (Hidden Overlay) -->
+    <div id="checkout-overlay" class="fixed inset-0 z-[110] bg-white hidden overflow-y-auto p-8 md:p-20">
+        <button onclick="closeCheckout()"
+            class="absolute top-10 right-10 text-xs font-bold uppercase tracking-widest flex items-center gap-2">
+            <svg width="16" height="16" fill="none" stroke="currentColor">
+                <path d="M10 14l-6-6 6-6" />
+            </svg> Back to Store
+        </button>
+
+        <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-20">
+            <div>
+                <h2 class="serif text-4xl mb-12">Checkout</h2>
+                <form class="space-y-6">
+                    <div>
+                        <label class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 block mb-2">Shipping
+                            Information</label>
+                        <input type="text" placeholder="Nama Lengkap"
+                            class="w-full border-b border-zinc-200 py-3 focus:border-black outline-none transition text-sm">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="email" placeholder="Email"
+                            class="border-b border-zinc-200 py-3 focus:border-black outline-none transition text-sm">
+                        <input type="tel" placeholder="Telepon"
+                            class="border-b border-zinc-200 py-3 focus:border-black outline-none transition text-sm">
+                    </div>
+                    <input type="text" placeholder="Alamat Pengiriman"
+                        class="w-full border-b border-zinc-200 py-3 focus:border-black outline-none transition text-sm">
+
+                    <div class="pt-8">
+                        <label class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 block mb-6">Payment
+                            Method</label>
+                        <div class="space-y-3">
+                            <label
+                                class="flex items-center gap-4 border p-4 cursor-pointer hover:bg-zinc-50 transition">
+                                <input type="radio" name="payment" checked class="accent-black">
+                                <span class="text-sm">Bank Transfer (Manual Verification)</span>
+                            </label>
+                            <label
+                                class="flex items-center gap-4 border p-4 cursor-pointer hover:bg-zinc-50 transition">
+                                <input type="radio" name="payment" class="accent-black">
+                                <span class="text-sm">Credit Card / Virtual Account</span>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="bg-zinc-50 p-10 h-fit">
+                <h3 class="serif text-2xl mb-8">Order Summary</h3>
+                <div id="checkout-summary" class="space-y-4 mb-8">
+                    <!-- Items summary will appear here -->
+                </div>
+                <div class="border-t border-zinc-200 pt-6">
+                    <div class="flex justify-between mb-2">
+                        <span class="text-xs text-zinc-500">Subtotal</span>
+                        <span id="summary-subtotal" class="text-sm">Rp 0</span>
+                    </div>
+                    <div class="flex justify-between mb-6">
+                        <span class="text-xs text-zinc-500">Shipping</span>
+                        <span class="text-sm font-bold text-green-600">FREE</span>
+                    </div>
+                    <div class="flex justify-between items-end border-t border-zinc-200 pt-6">
+                        <span class="text-xs font-bold uppercase tracking-widest">Total</span>
+                        <span id="summary-total" class="serif text-3xl">Rp 0</span>
+                    </div>
+                </div>
+                <button
+                    class="w-full bg-black text-white py-5 mt-10 text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 shadow-lg">Finalize
+                    Order</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Overlay -->
+    <div id="search-overlay" class="fixed inset-0 z-[120] bg-black/95 flex items-center justify-center p-8 hidden">
+        <button onclick="toggleSearch()"
+            class="absolute top-10 right-10 text-white uppercase text-xs font-bold tracking-widest">Close [Esc]</button>
+        <div class="w-full max-w-2xl">
+            <input type="text" id="search-input" placeholder="Search our collection..."
+                class="w-full bg-transparent border-b border-white text-white text-4xl serif outline-none pb-4 placeholder:text-zinc-700">
+            <p class="text-zinc-500 mt-6 text-xs uppercase tracking-widest">Type to filter by name or category</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white pt-24 pb-12 px-8 md:px-20 border-t">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
+            <div class="col-span-1 md:col-span-2">
+                <h1 class="serif text-3xl mb-6">L'AVANT-GARDE</h1>
+                <p class="text-gray-400 max-w-sm mb-8 leading-relaxed">Defining the contemporary wardrobe through
+                    precision, materiality, and soul. Born in Paris, curated for the world.</p>
+                <div class="flex gap-6">
+                    <a href="#" class="text-xs font-bold tracking-widest uppercase btn-premium">Instagram</a>
+                    <a href="#" class="text-xs font-bold tracking-widest uppercase btn-premium">Journal</a>
+                    <a href="#" class="text-xs font-bold tracking-widest uppercase btn-premium">Contact</a>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-[10px] font-bold uppercase tracking-widest mb-6">Navigation</h4>
+                <ul class="space-y-3 text-sm text-gray-500">
+                    <li><a href="#" class="hover:text-black transition">Store Locator</a></li>
+                    <li><a href="#" class="hover:text-black transition">Lookbook</a></li>
+                    <li><a href="#" class="hover:text-black transition">Sizing Guide</a></li>
+                    <li><a href="#" class="hover:text-black transition">Sustainability</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-[10px] font-bold uppercase tracking-widest mb-6">Newsletter</h4>
+                <div class="relative">
+                    <input type="email" placeholder="Email Address"
+                        class="w-full border-b border-black py-2 outline-none text-sm placeholder:text-gray-300">
+                    <button class="absolute right-0 top-1/2 -translate-y-1/2">
+                        <svg width="20" height="20" fill="none" stroke="currentColor">
+                            <path d="M1 10h18m-7-7l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+                <p class="text-[10px] text-gray-400 mt-4 leading-normal">Subscribe to receive updates on new drops and
+                    private sales.</p>
+            </div>
+        </div>
+        <div
+            class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-zinc-100 text-[10px] text-zinc-400 uppercase tracking-widest gap-4">
+            <p>&copy; 2024 L'AVANT-GARDE HOUSE. ALL RIGHTS RESERVED.</p>
+            <div class="flex gap-8">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast"
+        class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[200] bg-black text-white px-6 py-3 text-xs font-bold uppercase tracking-widest rounded-full opacity-0 translate-y-10 transition-all duration-300 pointer-events-none">
+        Item added to bag
+    </div>
+
+    <script>
+        // --- DATA ---
+        const products = [
+            { id: 1, name: "Overcoat Noir Premium", category: "baju", price: 2850000, img: "https://images.unsplash.com/photo-1539533113208-f6df8cc8b543?auto=format&fit=crop&q=80&w=600", desc: "Overcoat wol premium dengan potongan arsitektural." },
+            { id: 2, name: "Chelsea Boot Obsidian", category: "sepatu", price: 3400000, img: "https://images.unsplash.com/photo-1638247025967-b4e38f787b76?auto=format&fit=crop&q=80&w=600", desc: "Kulit anak sapi Italia dengan sol yang diperkuat." },
+            { id: 3, name: "Tailored Trousers Sand", category: "celana", price: 1200000, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&q=80&w=600", desc: "Potongan slim-fit dengan bahan breathable premium." },
+            { id: 4, name: "Silver Signet Ring", category: "aksesoris", price: 850000, img: "https://images.unsplash.com/photo-1611085583191-a3b1a308c021?auto=format&fit=crop&q=80&w=600", desc: "925 Sterling Silver dengan detail pahatan tangan." },
+            { id: 5, name: "Silk Blouse Crème", category: "baju", price: 1800000, img: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&q=80&w=600", desc: "100% sutra Mulberry dengan tekstur matte yang elegan." },
+            { id: 6, name: "Minimalist Leather Tote", category: "aksesoris", price: 4200000, img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=600", desc: "Tas serbaguna dengan ruang penyimpanan luas." }
+        ];
+
+        let cart = [];
+        let wishlist = [];
+        let currentQVProduct = null;
+
+        // --- CORE UI ---
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            const bar = document.getElementById('loader-bar');
+            bar.style.transform = 'scaleX(1)';
+
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 700);
+                renderProducts(products);
+                checkScroll();
+            }, 1000);
+        });
+
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('bg-white/80', 'backdrop-blur-md', 'py-4', 'border-b');
+                nav.classList.remove('py-6');
+            } else {
+                nav.classList.remove('bg-white/80', 'backdrop-blur-md', 'py-4', 'border-b');
+                nav.classList.add('py-6');
+            }
+            checkScroll();
+        });
+
+        function checkScroll() {
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(el => {
+                const windowHeight = window.innerHeight;
+                const revealTop = el.getBoundingClientRect().top;
+                if (revealTop < windowHeight - 100) el.classList.add('active');
+            });
+        }
+
+        // --- RENDERING ---
+        function renderProducts(items) {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = items.map((p, idx) => `
+                <div class="product-card group relative reveal" style="transition-delay: ${idx * 0.1}s">
+                    <div class="aspect-[3/4] overflow-hidden bg-zinc-100 relative mb-6">
+                        <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-1000">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition flex items-center justify-center opacity-0 group-hover:opacity-100 duration-500">
+                            <button onclick="openQuickView(${p.id})" class="bg-white text-black px-6 py-3 text-[10px] font-bold uppercase tracking-widest shadow-xl transform translate-y-4 group-hover:translate-y-0 transition duration-500">Quick View</button>
+                        </div>
+                        <button onclick="toggleWishlistItem(${p.id})" class="absolute top-4 right-4 text-black bg-white/80 p-2 rounded-full opacity-0 group-hover:opacity-100 transition duration-300 ${wishlist.includes(p.id) ? 'text-accent' : ''}">
+                            <svg width="16" height="16" fill="${wishlist.includes(p.id) ? 'currentColor' : 'none'}" stroke="currentColor"><path d="M8 15.5l-1.5-1.5C3 10 1 7.5 1 4.5a3.5 3.5 0 016.5-2A3.5 3.5 0 0115 4.5c0 3-2 5.5-5.5 9.5L8 15.5z"/></svg>
+                        </button>
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="serif text-xl">${p.name}</h4>
+                            <p class="text-zinc-400 font-light text-sm">Rp ${p.price.toLocaleString('id-ID')}</p>
+                        </div>
+                        <p class="text-[10px] uppercase tracking-widest text-zinc-400">${p.category}</p>
+                    </div>
+                </div>
+            `).join('');
+            checkScroll();
+        }
+
+        // --- FILTER ---
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => {
+                    b.classList.remove('active', 'text-black', 'border-b-2', 'border-black');
+                    b.classList.add('text-gray-400');
+                });
+                btn.classList.add('active', 'text-black', 'border-b-2', 'border-black');
+                btn.classList.remove('text-gray-400');
+
+                const filter = btn.dataset.filter;
+                const filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
+
+                const grid = document.getElementById('product-grid');
+                grid.style.opacity = '0';
+                setTimeout(() => {
+                    renderProducts(filtered);
+                    grid.style.opacity = '1';
+                }, 300);
+            });
+        });
+
+        // --- QUICK VIEW ---
+        function openQuickView(id) {
+            const p = products.find(prod => prod.id === id);
+            currentQVProduct = p;
+            document.getElementById('qv-title').innerText = p.name;
+            document.getElementById('qv-price').innerText = `Rp ${p.price.toLocaleString('id-ID')}`;
+            document.getElementById('qv-category').innerText = p.category;
+            document.getElementById('qv-desc').innerText = p.desc;
+            document.getElementById('qv-image').src = p.img;
+            document.getElementById('quick-view').classList.add('active');
+        }
+
+        function closeQuickView() {
+            document.getElementById('quick-view').classList.remove('active');
+        }
+
+        // --- CART LOGIC ---
+        function toggleCart() {
+            document.getElementById('cart-drawer').classList.toggle('open');
+        }
+
+        function handleAddToCartFromQV() {
+            addToCart(currentQVProduct.id);
+            closeQuickView();
+        }
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            const exists = cart.find(item => item.id === id);
+
+            if (exists) {
+                exists.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+
+            updateCartUI();
+            showToast(`Added ${product.name} to bag`);
+        }
+
+        function updateCartUI() {
+            const cartItems = document.getElementById('cart-items');
+            const cartCount = document.getElementById('cart-count');
+            const totalDisplay = document.getElementById('cart-total');
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<div class="text-center py-20 text-gray-400"><p>Bag is empty.</p></div>';
+                cartCount.classList.add('hidden');
+                totalDisplay.innerText = "Rp 0";
+                return;
+            }
+
+            cartCount.classList.remove('hidden');
+            cartCount.innerText = cart.reduce((acc, curr) => acc + curr.quantity, 0);
+
+            let total = 0;
+            cartItems.innerHTML = cart.map(item => {
+                total += item.price * item.quantity;
+                return `
+                    <div class="flex gap-4 border-b border-zinc-100 pb-6">
+                        <img src="${item.img}" class="w-24 h-32 object-cover bg-gray-100">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <h5 class="serif text-lg leading-tight">${item.name}</h5>
+                                <button onclick="removeFromCart(${item.id})" class="text-zinc-300 hover:text-black transition">
+                                    <svg width="14" height="14" fill="none" stroke="currentColor"><path d="M1 1l12 12M13 1L1 13"/></svg>
+                                </button>
+                            </div>
+                            <p class="text-xs text-zinc-400 mt-1 uppercase tracking-widest">${item.category}</p>
+                            <div class="flex justify-between items-end mt-6">
+                                <div class="flex items-center gap-4 border px-3 py-1">
+                                    <button onclick="changeQty(${item.id}, -1)" class="text-lg">-</button>
+                                    <span class="text-xs font-bold">${item.quantity}</span>
+                                    <button onclick="changeQty(${item.id}, 1)" class="text-lg">+</button>
+                                </div>
+                                <p class="text-sm font-semibold">Rp ${(item.price * item.quantity).toLocaleString('id-ID')}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            totalDisplay.innerText = `Rp ${total.toLocaleString('id-ID')}`;
+        }
+
+        function changeQty(id, delta) {
+            const item = cart.find(i => i.id === id);
+            item.quantity += delta;
+            if (item.quantity < 1) removeFromCart(id);
+            else updateCartUI();
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(i => i.id !== id);
+            updateCartUI();
+        }
+
+        // --- WISHLIST ---
+        function toggleWishlistItem(id) {
+            const index = wishlist.indexOf(id);
+            if (index > -1) {
+                wishlist.splice(index, 1);
+                showToast("Removed from wishlist");
+            } else {
+                wishlist.push(id);
+                showToast("Saved to wishlist");
+            }
+            updateWishlistCount();
+            renderProducts(products); // re-render to update heart icon
+        }
+
+        function updateWishlistCount() {
+            const count = document.getElementById('wishlist-count');
+            if (wishlist.length > 0) {
+                count.innerText = wishlist.length;
+                count.classList.remove('hidden');
+            } else {
+                count.classList.add('hidden');
+            }
+        }
+
+        // --- SEARCH ---
+        function toggleSearch() {
+            const overlay = document.getElementById('search-overlay');
+            overlay.classList.toggle('hidden');
+            if (!overlay.classList.contains('hidden')) {
+                document.getElementById('search-input').focus();
+            }
+        }
+
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            const val = e.target.value.toLowerCase();
+            const filtered = products.filter(p =>
+                p.name.toLowerCase().includes(val) ||
+                p.category.toLowerCase().includes(val)
+            );
+            renderProducts(filtered);
+        });
+
+        // --- CHECKOUT ---
+        function openCheckout() {
+            if (cart.length === 0) {
+                showToast("Add items to cart first");
+                return;
+            }
+            document.getElementById('checkout-overlay').classList.remove('hidden');
+            renderCheckoutSummary();
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkout-overlay').classList.add('hidden');
+        }
+
+        function renderCheckoutSummary() {
+            const summary = document.getElementById('checkout-summary');
+            let total = 0;
+            summary.innerHTML = cart.map(item => {
+                total += item.price * item.quantity;
+                return `
+                    <div class="flex justify-between text-sm">
+                        <span>${item.name} x${item.quantity}</span>
+                        <span>Rp ${(item.price * item.quantity).toLocaleString('id-ID')}</span>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('summary-subtotal').innerText = `Rp ${total.toLocaleString('id-ID')}`;
+            document.getElementById('summary-total').innerText = `Rp ${total.toLocaleString('id-ID')}`;
+        }
+
+        // --- TOAST ---
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.style.opacity = '1';
+            toast.style.transform = 'translate(-50%, 0)';
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translate(-50%, 40px)';
+            }, 2500);
+        }
+
+        // Menu Toggle (Mobile)
+        function toggleMenu() {
+            showToast("Navigation panel is under maintenance");
+        }
+
+        // Esc key handlers
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeQuickView();
+                document.getElementById('search-overlay').classList.add('hidden');
+                document.getElementById('cart-drawer').classList.remove('open');
+            }
+        });
+    </script>
+</body>
+
+</html>

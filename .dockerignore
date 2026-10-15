@@ -1,0 +1,17 @@
+.git
+.github
+.env
+.env.*
+vendor
+build
+tests
+data_konten
+template_index
+writable
+public/uploads
+docs
+*.sql
+*.sql.gz
+*.tar.gz
+*.pem
+*.key

@@ -17,6 +17,9 @@ RUN composer install --no-dev --no-interaction --prefer-dist --no-progress --no-
 COPY . .
 RUN composer dump-autoload --no-dev --optimize --no-scripts \
     && mkdir -p writable/cache writable/logs writable/session writable/uploads public/uploads \
+    && find . -type d -exec chmod 755 {} + \
+    && find . -type f -exec chmod 644 {} + \
+    && chown root:root . \
     && chown -R www-data:www-data writable public/uploads
 
 COPY docker/apache.conf /etc/apache2/sites-available/000-default.conf

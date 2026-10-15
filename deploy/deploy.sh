@@ -20,6 +20,7 @@ dc() { docker compose --env-file "$ENV_FILE" "$@"; }
 
 dc config --quiet
 dc build app
+dc run --rm --no-deps --interactive=false app apache2ctl -t
 dc up -d --wait --wait-timeout 180 db
 
 # Every deploy keeps a database snapshot outside the checkout.
@@ -36,7 +37,7 @@ rollback_app() {
     fi
 }
 trap rollback_app ERR
-dc run --rm --no-deps app php spark migrate --all
+dc run --rm --no-deps --interactive=false app php spark migrate --all
 dc up -d --no-deps --no-build --wait --wait-timeout 180 app
 curl --fail --silent --show-error --max-time 15 "http://127.0.0.1:${APP_PORT:-18081}/" -o /dev/null
 python3 - "$ENV_FILE" "$sha" <<'PY'

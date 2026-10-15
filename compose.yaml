@@ -20,6 +20,8 @@ services:
       database_default_DBDriver: MySQLi
       database_default_DBDebug: "false"
       encryption_key: ${ENCRYPTION_KEY:?Set ENCRYPTION_KEY in the server environment file}
+      cookie_secure: "true"
+      cookie_httponly: "true"
     volumes:
       - ${DATA_DIR:-./data}/writable:/var/www/html/writable
       - ${DATA_DIR:-./data}/uploads:/var/www/html/public/uploads
@@ -27,7 +29,7 @@ services:
       db:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "--fail", "--silent", "--max-time", "10", "http://127.0.0.1/"]
+      test: ["CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "--max-time", "10", "http://127.0.0.1/"]
       interval: 20s
       timeout: 12s
       retries: 5

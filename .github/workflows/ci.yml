@@ -39,6 +39,7 @@ jobs:
           docker compose build app
       - name: Validate Composer and PHP syntax
         run: |
+          docker compose run --rm --no-deps app apache2ctl -t
           docker compose run --rm --no-deps app composer validate --no-check-publish
           docker compose run --rm --no-deps app sh -c 'find app public -name "*.php" -print0 | xargs -0 -n1 php -l >/dev/null'
       - name: Migrate clean database and seed portfolio
@@ -58,4 +59,4 @@ jobs:
         run: docker compose logs --tail=100
       - name: Stop CI containers
         if: always()
-        run: docker compose down --volumes
+        run: docker compose stop

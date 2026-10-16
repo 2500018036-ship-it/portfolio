@@ -15,7 +15,7 @@
         <div class="lg:col-span-5 lg:pt-4">
             <h3 class="serif text-3xl mb-6"><?= esc($lab['title']) ?></h3>
             <p class="text-zinc-600 leading-relaxed"><?= esc($lab['short_description']) ?></p>
-            <p class="text-zinc-500 text-sm leading-relaxed mt-5">Diagram menghubungkan sketsa pribadi, konfigurasi MikroTik dan Cisco, serta layanan yang diperiksa di Debian. Detail yang belum diperiksa diberi keterangan pada dokumentasi.</p>
+            <p class="text-zinc-500 text-sm leading-relaxed mt-5">Saya memakai lab ini untuk belajar VLAN, virtualisasi, DNS, dan pengelolaan server. Website portofolio ini juga berjalan di Debian dalam lab tersebut.</p>
             <div class="mt-8 space-y-4 text-sm border-t pt-6">
                 <p><span class="text-accent font-semibold">VLAN 10</span> &nbsp; Management</p>
                 <p><span class="text-accent font-semibold">VLAN 20</span> &nbsp; Server dan layanan</p>

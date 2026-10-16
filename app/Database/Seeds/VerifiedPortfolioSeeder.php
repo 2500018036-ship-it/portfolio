@@ -104,6 +104,11 @@ class VerifiedPortfolioSeeder extends Seeder
             if (! empty($existing['deleted_at'])) {
                 return;
             }
+            // An owner-uploaded topology takes precedence over the bundled diagram.
+            if ($table === 'labs' && str_starts_with((string) ($existing['topology_image'] ?? ''), 'uploads/')) {
+                $row['topology_image'] = $existing['topology_image'];
+                $row['thumbnail'] = $existing['topology_image'];
+            }
             $this->db->table($table)->where('id', $existing['id'])->update($row + ['updated_at' => $now]);
         } else {
             $this->db->table($table)->insert($row + ['created_at' => $now, 'updated_at' => $now]);

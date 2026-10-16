@@ -75,6 +75,9 @@ def main():
         visible = ' '.join(page.text)
         assert not re.search(r'lorem ipsum|coming soon|your name|\[(?:placeholder|demo)|placeholder content|demo documentation', visible, re.I), f'Unreviewed content at {url}'
         assert not re.search(r'<(?:title|meta)[^>]*(?:placeholder|lorem ipsum|your name)', html, re.I), f'Unreviewed metadata at {url}'
+        assert not re.search(r'batas verifikasi|screenshot pengguna|memaksakan narasi|sesuai informasi saya|fitur terverifikasi|diklaim terverifikasi', visible, re.I), f'Editorial process text at {url}'
+        if urlsplit(url).path.startswith(('/blog', '/docs')):
+            assert not any(re.search(r'homelab-topology|service-path|/labs/topologies/', asset) for asset in page.assets), f'Topology must stay in Home Lab: {url}'
         pages[url] = page
         for link in page.links:
             assert link.strip() not in ('', '#'), f'Empty link at {url}'

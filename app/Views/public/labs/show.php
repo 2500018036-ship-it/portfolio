@@ -131,7 +131,7 @@ $sections = [
                     </div>
                 </div>
                 <aside class="lg:col-span-4">
-                    <p class="text-sm text-zinc-500 mb-6 leading-relaxed">Klik gambar untuk membuka diagram ukuran penuh. Keterangan sumber dan batas verifikasi tercantum di bagian bawah diagram.</p>
+                    <p class="text-sm text-zinc-500 mb-6 leading-relaxed">Klik gambar untuk melihat topologi ukuran penuh.</p>
                     <dl class="space-y-6 text-sm">
                         <?php if ($lab['category_name']): ?>
                             <div>

@@ -1,4 +1,11 @@
-<p class="evidence-note">Sumber: backup MikroTik BU.backup dan tangkapan layar Cisco yang saya kirim. Cuplikan CLI di bawah direkonstruksi dari nilai konfigurasi; bukan skrip restore. Jangan menambah entri yang sudah ada.</p><h2 id="segmentasi">Tiga segmen dengan fungsi berbeda</h2><p>MikroTik menjadi gateway setiap VLAN. Ketiga interface VLAN berada pada ether4 yang terhubung ke GE1 Cisco. VLAN 10 dipakai untuk management, VLAN 20 untuk server, dan VLAN 30 untuk client. Access point TP-Link berada pada cabang client sesuai sketsa fisik saya.</p><div class="table-scroll"><table><thead><tr><th>VLAN</th><th>Peran</th><th>Subnet</th><th>Gateway</th><th>Pool DHCP</th><th>Access Cisco</th></tr></thead><tbody><tr><td>10</td><td>Management</td><td>192.168.10.0/24</td><td>192.168.10.1</td><td>192.168.10.100–200</td><td>FE1, FE2</td></tr><tr><td>20</td><td>Server</td><td>192.168.20.0/24</td><td>192.168.20.1</td><td>192.168.20.100–200</td><td>GE2</td></tr><tr><td>30</td><td>Client / guest</td><td>192.168.30.0/24</td><td>192.168.30.1</td><td>192.168.30.100–200</td><td>FE3</td></tr></tbody></table></div><h2 id="switch">Pemetaan Cisco SF200-24</h2><p>GE1 menggunakan mode trunk dengan VLAN 10, 20, dan 30 tagged. VLAN 1 tetap untagged dan menjadi PVID 1. GE2 adalah access port dengan PVID 20. FE1 dan FE2 memakai PVID 10, sedangkan FE3 memakai PVID 30. FE4–FE24 terlihat dalam mode trunk/PVID 1; tangkapan layar tidak menunjukkan bahwa port tersebut membawa VLAN 10/20/30.</p><figure><a href="/media/portfolio/cisco-vlan-membership.png" target="_blank" rel="noopener"><img src="/media/portfolio/cisco-vlan-membership.png" alt="Keanggotaan VLAN aktual: GE1 1UP, 10T, 20T, 30T; GE2 20UP; FE1/FE2 10UP; FE3 30UP." loading="lazy"></a><figcaption>Keanggotaan VLAN aktual: GE1 1UP, 10T, 20T, 30T; GE2 20UP; FE1/FE2 10UP; FE3 30UP.</figcaption></figure><h2 id="router">Interface VLAN dan alamat MikroTik</h2><pre><code>/interface vlan
+<p>Di home lab saya, MikroTik menjadi gateway untuk VLAN 10, 20, dan 30. Ketiganya memakai ether4 sebagai uplink ke GE1 Cisco SF200-24. Saya memakai VLAN 10 untuk management, VLAN 20 untuk server, dan VLAN 30 untuk client serta access point TP-Link.</p>
+<h2 id="segmentasi">Alamat setiap VLAN</h2>
+<div class="table-scroll"><table><thead><tr><th>VLAN</th><th>Peran</th><th>Subnet</th><th>Gateway</th><th>Pool DHCP</th><th>Access Cisco</th></tr></thead><tbody><tr><td>10</td><td>Management</td><td>192.168.10.0/24</td><td>192.168.10.1</td><td>192.168.10.100–200</td><td>FE1, FE2</td></tr><tr><td>20</td><td>Server</td><td>192.168.20.0/24</td><td>192.168.20.1</td><td>192.168.20.100–200</td><td>GE2</td></tr><tr><td>30</td><td>Client / guest</td><td>192.168.30.0/24</td><td>192.168.30.1</td><td>192.168.30.100–200</td><td>FE3</td></tr></tbody></table></div>
+<h2 id="switch">Pengaturan port Cisco</h2>
+<p>GE1 memakai trunk dengan VLAN 10/20/30 tagged dan VLAN 1 untagged, PVID 1. FE1 dan FE2 memakai access VLAN 10, GE2 access VLAN 20, dan FE3 access VLAN 30. Pada FE4–FE24, membership yang tercatat adalah VLAN 1 untagged dengan PVID 1.</p>
+<h2 id="router">Interface VLAN, gateway, dan pool</h2>
+<p>Berikut contoh penulisan CLI untuk interface dan alamat yang saya pakai. Pada router yang sudah memiliki entri ini, saya mengecek konfigurasi terlebih dahulu agar tidak menambahkan entri ganda.</p>
+<pre><code>/interface vlan
 add interface=ether4 name=vlan10-management vlan-id=10
 add interface=ether4 name=vlan20-server vlan-id=20
 add interface=ether4 name=vlan30-client vlan-id=30
@@ -9,16 +16,23 @@ add address=192.168.30.1/24 interface=vlan30-client
 /ip pool
 add name=dhcp_pool0 ranges=192.168.10.100-192.168.10.200
 add name=dhcp_pool1 ranges=192.168.20.100-192.168.20.200
-add name=dhcp_pool2 ranges=192.168.30.100-192.168.30.200</code></pre><h2 id="dhcp">DHCP per VLAN</h2><p>dhcp1, dhcp2, dan dhcp3 masing-masing mengacu pada interface VLAN 10, 20, dan 30. Lease time pada backup adalah 1800 detik atau 30 menit. DNS yang dibagikan adalah 192.168.20.199. Lease aktif Debian mengonfirmasi gateway 192.168.20.1 dan DNS yang sama.</p><pre><code>/ip dhcp-server
+add name=dhcp_pool2 ranges=192.168.30.100-192.168.30.200</code></pre>
+<h2 id="dhcp">DHCP dan DNS client</h2>
+<p>dhcp1, dhcp2, dan dhcp3 melayani VLAN masing-masing dengan lease 30 menit. Ketiga scope membagikan alamat Technitium 192.168.20.199 sebagai DNS. Debian menerima gateway 192.168.20.1 dan resolver yang sama melalui DHCP.</p>
+<pre><code>/ip dhcp-server
 add name=dhcp1 interface=vlan10-management address-pool=dhcp_pool0 lease-time=30m disabled=no
 add name=dhcp2 interface=vlan20-server address-pool=dhcp_pool1 lease-time=30m disabled=no
 add name=dhcp3 interface=vlan30-client address-pool=dhcp_pool2 lease-time=30m disabled=no
 /ip dhcp-server network
 add address=192.168.10.0/24 gateway=192.168.10.1 dns-server=192.168.20.199
 add address=192.168.20.0/24 gateway=192.168.20.1 dns-server=192.168.20.199
-add address=192.168.30.0/24 gateway=192.168.30.1 dns-server=192.168.20.199</code></pre><h2 id="cek">Pemeriksaan sebelum mengubah konfigurasi</h2><pre><code>/interface vlan print detail
+add address=192.168.30.0/24 gateway=192.168.30.1 dns-server=192.168.20.199</code></pre>
+<h2 id="cek">Mengecek koneksi client</h2>
+<p>Saya mulai dari membership VLAN dan PVID pada switch, lalu membandingkannya dengan interface di MikroTik. Sesudah itu saya lihat alamat IP, gateway, DNS, dan lease client. Mode trunk perlu dicek bersama daftar VLAN yang dilewatkan agar pengaturan uplink di kedua perangkat cocok.</p>
+<pre><code>/interface vlan print detail
 /ip address print
 /ip pool print
 /ip dhcp-server print detail
 /ip dhcp-server network print
-/ip dhcp-server lease print</code></pre><p>Di Cisco, cocokkan menu Interface Settings, Port to VLAN, dan VLAN Membership. Mode trunk saja belum membuktikan keanggotaan VLAN. Periksa tag dan PVID pada kedua ujung uplink, lalu periksa IP, gateway, DNS, dan konektivitas client. Backup juga memuat pool di subnet 192.168.26.0 dan 192.168.40.0; keduanya tidak saya gambar sebagai VLAN aktif karena tidak ada interface VLAN terkait dalam bagian konfigurasi yang diperiksa.</p>
+/ip dhcp-server lease print</code></pre>
+<p>Kalau client sudah mendapat alamat yang sesuai, saya lanjut mencoba gateway dan layanan yang dibutuhkan. Untuk akses antar-VLAN, saya juga melihat rule firewall dan counter paket pada MikroTik.</p>

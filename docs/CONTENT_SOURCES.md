@@ -3,6 +3,13 @@
 Konten ditinjau pada 16 Oktober 2026. Tidak ada konfigurasi perangkat jaringan
 yang diubah atau dipulihkan selama pembaruan website ini.
 
+Pembaruan gaya tulisan menghapus catatan proses editorial dari halaman publik.
+Parameter teknis tetap sama; sumber dan batas pemeriksaan tetap dicatat di file
+ini. Blog dan dokumentasi memakai sampul logo, sedangkan topologi hanya muncul
+di bagian Home Lab. Topologi unggahan pemilik dari admin dipertahankan. Sumber
+logo ada di `public/media/portfolio/brands/SOURCES.md`; komposisi cover dibuat
+dengan `python tools/render_article_covers.py`, lalu diraster ke PNG.
+
 | Informasi | Sumber yang diperiksa |
 | --- | --- |
 | Profil, pendidikan, pengalaman | CV dan sertifikat pengguna di `data_konten/`; profil produksi |

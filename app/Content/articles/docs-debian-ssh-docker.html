@@ -1,15 +1,29 @@
-<p>Server Debian bernama webserver menjalankan website portofolio dan layanan Docker. Pemeriksaan SSH dilakukan sebagai azril pada 192.168.20.195. Interface ens18 memiliki prefix /24, default route melalui 192.168.20.1, dan DNS 192.168.20.199.</p><h2 id="jaringan">Alamat server saat ini berasal dari DHCP</h2><pre><code># /etc/network/interfaces
+<p>Debian Web Server saya bernama webserver dan memakai alamat 192.168.20.195/24 pada interface ens18. Gateway-nya 192.168.20.1 dan resolver DNS-nya 192.168.20.199. Server ini menjalankan portofolio serta Nginx Proxy Manager melalui Docker.</p>
+<h2 id="jaringan">Konfigurasi jaringan Debian</h2>
+<p>Interface ens18 menggunakan DHCP. Bagian interface pada /etc/network/interfaces ditulis seperti berikut:</p>
+<pre><code># /etc/network/interfaces
 allow-hotplug ens18
-iface ens18 inet dhcp</code></pre><p>Lease aktif memiliki durasi 1800 detik dan DHCP server identifier 192.168.20.1. Sketsa awal menyebut IP statis melalui Winbox, tetapi sistem Debian saat audit memakai DHCP. Status reservasi lease pada router belum dibuktikan. Catatan ini mengikuti kondisi yang diamati, sehingga alamat server tidak disebut sebagai konfigurasi statis Debian.</p><pre><code>ip -brief address show ens18
+iface ens18 inet dhcp</code></pre>
+<p>Lease yang diterima memiliki durasi 1800 detik atau 30 menit. Untuk melihat alamat, route, resolver, dan informasi lease, saya menggunakan perintah berikut sebelum mencoba koneksi ke gateway dan domain.</p>
+<pre><code>ip -brief address show ens18
 ip route
 cat /etc/resolv.conf
 sudo dhcpcd -U ens18
 ping -c 3 192.168.20.1
-getent ahostsv4 azrilachdi.web.id</code></pre><h2 id="ssh">Akses SSH dan pengaturan yang diamati</h2><pre><code>ssh azril@192.168.20.195
-sudo sshd -T | grep -E &quot;^(port|permitrootlogin|passwordauthentication|pubkeyauthentication) &quot;</code></pre><p>SSH mendengarkan pada port 22. Pengaturan efektif saat pemeriksaan menunjukkan pubkeyauthentication yes, passwordauthentication yes, dan permitrootlogin without-password. Nilai ini didokumentasikan sebagai keadaan server, bukan sebagai klaim bahwa semua praktik hardening telah diterapkan. Perubahan autentikasi harus mempertahankan sesi akses yang masih berfungsi dan diuji dari sesi kedua.</p><h2 id="container">Layanan aplikasi</h2><p>Container portfolio-app-1 menjalankan PHP 8.3 dan Apache. portfolio-db-1 menggunakan MariaDB 11.4. Port aplikasi dipetakan ke 127.0.0.1:18081, sedangkan database hanya berada pada network backend internal. Nginx Proxy Manager terhubung lewat web-proxy. Data database, unggahan, dan writable berada di luar image aplikasi.</p><h2 id="operasi">Perintah operasi yang digunakan</h2><pre><code>cd /mnt/data/docker-compose/portfolio/repository
+getent ahostsv4 azrilachdi.web.id</code></pre>
+<h2 id="ssh">Mengakses server lewat SSH</h2>
+<pre><code>ssh azril@192.168.20.195
+sudo sshd -T | grep -E &quot;^(port|permitrootlogin|passwordauthentication|pubkeyauthentication) &quot;</code></pre>
+<p>SSH memakai port 22 dengan autentikasi password dan public key aktif. Pengaturan root adalah without-password. Kalau mengubah konfigurasi SSH, saya mempertahankan sesi yang masih terhubung dan mencoba akses dari sesi kedua sebelum menutupnya.</p>
+<h2 id="container">Container aplikasi dan database</h2>
+<p>portfolio-app-1 menjalankan PHP 8.3 dan Apache, sedangkan portfolio-db-1 memakai MariaDB 11.4. Aplikasi bisa dicek dari host melalui 127.0.0.1:18081. Database berada di network backend internal, sementara Nginx Proxy Manager terhubung ke aplikasi melalui network web-proxy.</p>
+<p>Data database, unggahan, dan writable berada di /mnt/data/storage/portfolio, terpisah dari image aplikasi. Dengan begitu, pembaruan image tetap memakai data yang sudah ada.</p>
+<h2 id="operasi">Perintah untuk mengecek layanan</h2>
+<pre><code>cd /mnt/data/docker-compose/portfolio/repository
 sudo docker compose --env-file ../runtime.env config --quiet
 sudo docker compose --env-file ../runtime.env ps
 sudo docker compose --env-file ../runtime.env logs --tail=50 app
 curl --fail --header &#x27;X-Forwarded-Proto: https&#x27; http://127.0.0.1:18081/ -o /dev/null
 sudo systemctl status portfolio-deploy.timer --no-pager
-sudo journalctl -u portfolio-deploy.service -n 50 --no-pager</code></pre><p>Gunakan runtime.env yang sudah ada untuk menjalankan Compose. File tersebut menyimpan konfigurasi rahasia dan tidak dipublikasikan. Mulai diagnosis dari status container dan health check, lalu baca log Apache/aplikasi serta log deployment. Server juga menerima request monitoring ke /index.php/api/metrics yang menghasilkan 404; portofolio tidak memiliki endpoint tersebut dan request itu tidak membuktikan kegagalan halaman publik.</p>
+sudo journalctl -u portfolio-deploy.service -n 50 --no-pager</code></pre>
+<p>Saya memakai runtime.env yang sudah tersimpan di server untuk menjalankan Compose. Saat ada gangguan, saya mulai dari status container, health check, dan log aplikasi. Log deployment membantu mengecek proses build, migrasi, serta pergantian container.</p>

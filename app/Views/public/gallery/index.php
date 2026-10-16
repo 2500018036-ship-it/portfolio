@@ -37,7 +37,7 @@ $imageUrl = static function (?string $path): ?string {
     <main class="pt-32">
         <section class="px-8 md:px-20 pb-12">
             <div class="max-w-4xl">
-                <span class="text-xs font-bold uppercase tracking-widest text-accent">Visual Records</span>
+                <span class="text-xs font-bold uppercase tracking-widest text-accent">Dokumentasi Visual</span>
                 <h1 class="serif text-5xl md:text-7xl mt-3 mb-6 leading-tight">Gallery</h1>
                 <p class="text-xl text-zinc-500 max-w-3xl">Documentation images from projects, labs, campus activities, certifications, and events.</p>
             </div>

@@ -3,9 +3,10 @@ $imageUrl = static function (?string $path): ?string {
     return portfolio_asset_url($path);
 };
 
-$period = static function (?string $start, ?string $end, bool $current = false): string {
-    $from = $start ? date('M Y', strtotime($start)) : '';
-    $to = $current ? 'Present' : ($end ? date('M Y', strtotime($end)) : '');
+$period = static function (?string $start, ?string $end, bool $current = false, bool $yearOnly = false): string {
+    $format = $yearOnly ? 'Y' : 'M Y';
+    $from = $start ? date($format, strtotime($start)) : '';
+    $to = $current ? 'Sekarang' : ($end ? date($format, strtotime($end)) : '');
 
     if ($from && $to) {
         return $from . ' - ' . $to;
@@ -14,41 +15,24 @@ $period = static function (?string $start, ?string $end, bool $current = false):
     return $from ?: ($to ?: '');
 };
 
-$profileImage = $imageUrl($profile['profile_image'] ?? null);
-$heroSecondaryImage = null;
-foreach (($galleryItems ?? []) as $item) {
-    $heroSecondaryImage = $imageUrl($item['image'] ?? null);
-    if ($heroSecondaryImage) {
-        break;
-    }
-}
-if (! $heroSecondaryImage) {
-    foreach (($featuredProjects ?? []) as $project) {
-        $heroSecondaryImage = $imageUrl($project['thumbnail'] ?? $project['featured_image'] ?? null);
-        if ($heroSecondaryImage) {
-            break;
-        }
-    }
-}
-$heroSecondaryImage = $heroSecondaryImage ?: $profileImage;
 $heroTitle = $profile['name'] ?? $siteTitle;
-$heroSubtitle = $profile['professional_title'] ?? $profile['headline'] ?? 'Portfolio content is being prepared.';
-$heroIntro = $profile['short_bio'] ?? $profile['career_focus'] ?? 'This portfolio will show selected work, technical documentation, and professional background once content is published.';
+$heroSubtitle = $profile['professional_title'] ?? $profile['headline'] ?? 'Jaringan & Infrastruktur IT';
+$heroIntro = $profile['short_bio'] ?? $profile['career_focus'] ?? 'Catatan proyek, home lab, dan pengalaman teknis Muhammad Azril Achdi.';
 $hasAbout = $profile && (($profile['full_bio'] ?? '') || ($profile['short_bio'] ?? '') || ($profile['career_focus'] ?? '') || ($profile['location'] ?? ''));
 $hasContact = true;
 $navLinks = [
-    ['Home', site_url('/')],
-    ['About', '#about'],
-    ['Skills', '#skills'],
-    ['Projects', '#projects'],
-    ['Labs', '#labs'],
-    ['Certificates', '#certificates'],
-    ['Experience', '#experience'],
-    ['Education', '#education'],
-    ['Documentation', site_url('docs')],
+    ['Beranda', site_url('/')],
+    ['Profil', '#about'],
+    ['Keahlian', '#skills'],
+    ['Proyek', '#projects'],
+    ['Home Lab', '#labs'],
+    ['Sertifikat', '#certificates'],
+    ['Pengalaman', '#experience'],
+    ['Pendidikan', '#education'],
+    ['Dokumentasi', site_url('docs')],
     ['Blog', site_url('blog')],
-    ['Gallery', site_url('gallery')],
-    ['Contact', '#contact'],
+    ['Galeri', site_url('gallery')],
+    ['Kontak', '#contact'],
 ];
 ?>
 <!DOCTYPE html>
@@ -56,6 +40,7 @@ $navLinks = [
 
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="<?= base_url('assets/css/articles.css') ?>?v=<?= substr(hash_file('sha256', FCPATH . 'assets/css/articles.css'), 0, 12) ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= esc($title) ?></title>
     <meta name="description" content="<?= esc($metaDescription, 'attr') ?>">
@@ -217,13 +202,14 @@ $navLinks = [
 
     <section class="relative min-h-screen w-full flex flex-col justify-center overflow-hidden bg-[#e5e5e5] px-6 pt-32 pb-16 md:h-screen md:px-20 md:py-0">
         <div class="relative z-10 order-2 max-w-2xl md:order-none md:max-w-[48vw] lg:max-w-[50rem]">
+            <p class="text-xs uppercase tracking-[0.22em] text-accent font-semibold mb-6"><?= esc($heroTitle) ?></p>
             <h1 class="serif text-5xl sm:text-7xl md:text-8xl xl:text-9xl mb-6 leading-none reveal break-words">
                 <?= esc($heroSubtitle) ?>
             </h1>
             <p class="text-gray-600 mb-8 max-w-md reveal" style="transition-delay: 0.2s"><?= esc($heroIntro) ?></p>
             <div class="flex flex-wrap gap-4 reveal" style="transition-delay: 0.4s">
                 <?php if ($featuredProjects): ?>
-                    <a href="#projects" class="bg-black text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-zinc-800 transition shadow-xl">View Projects</a>
+                    <a href="#projects" class="bg-black text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-zinc-800 transition shadow-xl">Lihat Proyek</a>
                 <?php endif; ?>
                 <a href="#contact" class="border border-black px-8 py-4 rounded-full text-sm font-semibold hover:bg-black hover:text-white transition">Contact</a>
             </div>
@@ -255,7 +241,7 @@ $navLinks = [
         <section id="skills" class="py-24 px-8 md:px-20">
             <div class="flex justify-between items-end mb-12">
                 <div>
-                    <span class="text-xs font-bold uppercase tracking-widest text-accent">Capabilities</span>
+                    <span class="text-xs font-bold uppercase tracking-widest text-accent">Bidang Keahlian</span>
                     <h2 class="serif text-4xl mt-2">Skills</h2>
                 </div>
             </div>
@@ -292,8 +278,8 @@ $navLinks = [
         <section id="projects" class="py-24 px-8 md:px-20 bg-white">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 gap-4">
                 <div>
-                    <span class="text-xs font-bold uppercase tracking-widest text-accent">Selected Work</span>
-                    <h2 class="serif text-5xl mt-2">Featured Projects</h2>
+                    <span class="text-xs font-bold uppercase tracking-widest text-accent">Karya Pilihan</span>
+                    <h2 class="serif text-5xl mt-2">Proyek Pilihan</h2>
                 </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16 grid-asymmetric">
@@ -312,7 +298,7 @@ $navLinks = [
                                 </div>
                             <?php endif; ?>
                             <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition flex items-center justify-center opacity-0 group-hover:opacity-100 duration-500">
-                                <span class="bg-white text-black px-6 py-3 text-[10px] font-bold uppercase tracking-widest shadow-xl transform translate-y-4 group-hover:translate-y-0 transition duration-500">View Detail</span>
+                                <span class="bg-white text-black px-6 py-3 text-[10px] font-bold uppercase tracking-widest shadow-xl transform translate-y-4 group-hover:translate-y-0 transition duration-500">Lihat Detail</span>
                             </div>
                         </div>
                         <div>
@@ -332,7 +318,7 @@ $navLinks = [
                 <?php if ($experience): ?>
                     <div>
                         <span class="text-xs font-bold uppercase tracking-widest text-accent">Experience</span>
-                        <h2 class="serif text-4xl mt-2 mb-10">Professional Path</h2>
+                        <h2 class="serif text-4xl mt-2 mb-10">Pengalaman Praktis</h2>
                         <div class="space-y-8">
                             <?php foreach ($experience as $item): ?>
                                 <div class="border-t pt-6 reveal">
@@ -348,11 +334,11 @@ $navLinks = [
                 <?php if ($education): ?>
                     <div id="education">
                         <span class="text-xs font-bold uppercase tracking-widest text-accent">Education</span>
-                        <h2 class="serif text-4xl mt-2 mb-10">Learning Record</h2>
+                        <h2 class="serif text-4xl mt-2 mb-10">Pendidikan</h2>
                         <div class="space-y-8">
                             <?php foreach ($education as $item): ?>
                                 <div class="border-t pt-6 reveal">
-                                    <p class="text-[10px] uppercase tracking-widest text-zinc-400"><?= esc($period($item['start_date'], $item['end_date'], (bool) $item['is_current'])) ?></p>
+                                    <p class="text-[10px] uppercase tracking-widest text-zinc-400"><?= esc($period($item['start_date'], $item['end_date'], (bool) $item['is_current'], true)) ?></p>
                                     <h3 class="serif text-2xl mt-2"><?= esc($item['institution']) ?></h3>
                                     <?php if ($item['program'] || $item['degree']): ?><p class="font-semibold"><?= esc($item['program'] ?: $item['degree']) ?></p><?php endif; ?>
                                     <?php if ($item['description']): ?><p class="text-sm text-zinc-500 mt-3 leading-relaxed"><?= esc($item['description']) ?></p><?php endif; ?>
@@ -365,11 +351,13 @@ $navLinks = [
         </section>
     <?php endif; ?>
 
-    <?php if ($certificates || $labs || $documentation || $blogPosts || $achievements): ?>
+    <?= $this->include('public/home/lab_section') ?>
+
+    <?php if ($certificates || $documentation || $achievements): ?>
         <section id="certificates" class="py-24 px-8 md:px-20 bg-white">
             <div class="mb-12">
-                <span class="text-xs font-bold uppercase tracking-widest text-accent">Proof and Notes</span>
-                <h2 class="serif text-5xl mt-2">Records</h2>
+                <span class="text-xs font-bold uppercase tracking-widest text-accent">Sertifikat & Dokumentasi</span>
+                <h2 class="serif text-5xl mt-2">Rekam Pembelajaran</h2>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <?php foreach ($certificates as $item): ?>
@@ -387,22 +375,6 @@ $navLinks = [
                         </div>
                     </a>
                 <?php endforeach; ?>
-                <?php if ($labs): ?><span id="labs" class="sr-only" aria-hidden="true">Networking Labs</span><?php endif; ?>
-                <?php foreach ($labs as $item): ?>
-                    <?php $labImage = $imageUrl($item['topology_image'] ?: ($item['thumbnail'] ?? null)); ?>
-                    <a href="<?= site_url('labs/' . $item['slug']) ?>" class="group border reveal block overflow-hidden hover:bg-black hover:text-white transition">
-                        <?php if ($labImage): ?>
-                            <div class="bg-zinc-100 p-4 flex items-center justify-center">
-                                <img src="<?= esc($labImage, 'attr') ?>" alt="<?= esc($item['title'], 'attr') ?>" class="max-h-48 max-w-full object-contain bg-white" loading="lazy" decoding="async" onerror="this.closest('div').classList.add('hidden')">
-                            </div>
-                        <?php endif; ?>
-                        <div class="p-6">
-                            <p class="text-[10px] uppercase tracking-widest text-zinc-400">Networking Lab</p>
-                            <h3 class="serif text-2xl mt-3"><?= esc($item['title']) ?></h3>
-                            <p class="text-sm text-zinc-500 mt-2 group-hover:text-zinc-300"><?= esc($item['short_description'] ?: $item['category_name'] ?: '') ?></p>
-                        </div>
-                    </a>
-                <?php endforeach; ?>
                 <?php if ($documentation): ?><span id="documentation" class="sr-only" aria-hidden="true">Documentation</span><?php endif; ?>
                 <?php foreach ($documentation as $item): ?>
                     <?php $docImage = $imageUrl($item['featured_image'] ?: ($item['thumbnail'] ?? null)); ?>
@@ -416,21 +388,6 @@ $navLinks = [
                             <p class="text-[10px] uppercase tracking-widest text-zinc-400">Documentation</p>
                             <h3 class="serif text-2xl mt-3"><?= esc($item['title']) ?></h3>
                             <p class="text-sm text-zinc-500 mt-2 group-hover:text-zinc-300"><?= esc(($item['summary'] ?? '') ?: $item['excerpt'] ?: $item['category'] ?: '') ?></p>
-                        </div>
-                    </a>
-                <?php endforeach; ?>
-                <?php foreach ($blogPosts as $item): ?>
-                    <?php $blogImage = $imageUrl($item['featured_image'] ?: ($item['thumbnail'] ?? null)); ?>
-                    <a href="<?= site_url('blog/' . $item['slug']) ?>" class="group border reveal block overflow-hidden hover:bg-black hover:text-white transition">
-                        <?php if ($blogImage): ?>
-                            <div class="bg-zinc-100 p-4 flex items-center justify-center">
-                                <img src="<?= esc($blogImage, 'attr') ?>" alt="<?= esc($item['title'], 'attr') ?>" class="max-h-48 max-w-full object-contain bg-white" loading="lazy" decoding="async" onerror="this.closest('div').classList.add('hidden')">
-                            </div>
-                        <?php endif; ?>
-                        <div class="p-6">
-                            <p class="text-[10px] uppercase tracking-widest text-zinc-400">Blog</p>
-                            <h3 class="serif text-2xl mt-3"><?= esc($item['title']) ?></h3>
-                            <p class="text-sm text-zinc-500 mt-2 group-hover:text-zinc-300"><?= esc($item['excerpt'] ?: $item['category_name'] ?: '') ?></p>
                         </div>
                     </a>
                 <?php endforeach; ?>
@@ -453,11 +410,13 @@ $navLinks = [
         </section>
     <?php endif; ?>
 
+    <?= $this->include('public/home/blog_section') ?>
+
     <?php if ($documents): ?>
         <section id="documents" class="py-24 px-8 md:px-20">
             <div class="mb-12">
-                <span class="text-xs font-bold uppercase tracking-widest text-accent">Downloads</span>
-                <h2 class="serif text-5xl mt-2">Documents</h2>
+                <span class="text-xs font-bold uppercase tracking-widest text-accent">Unduhan</span>
+                <h2 class="serif text-5xl mt-2">Dokumen</h2>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <?php foreach ($documents as $document): ?>
@@ -466,7 +425,7 @@ $navLinks = [
                         <h3 class="serif text-2xl mt-3"><?= esc($document['title']) ?></h3>
                         <?php if ($document['version']): ?><p class="text-xs uppercase tracking-widest text-zinc-400 mt-2"><?= esc($document['version']) ?></p><?php endif; ?>
                         <?php if ($document['description']): ?><p class="text-sm text-zinc-500 mt-4 leading-relaxed"><?= esc($document['description']) ?></p><?php endif; ?>
-                        <a href="<?= site_url('documents/' . $document['id'] . '/download') ?>" class="inline-block mt-6 text-xs font-bold uppercase tracking-widest btn-premium">Download</a>
+                        <a href="<?= site_url('documents/' . $document['id'] . '/download') ?>" class="inline-block mt-6 text-xs font-bold uppercase tracking-widest btn-premium">Unduh</a>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -477,10 +436,10 @@ $navLinks = [
         <section id="gallery" class="py-24 px-8 md:px-20 bg-white">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
                 <div>
-                    <span class="text-xs font-bold uppercase tracking-widest text-accent">Visual Records</span>
+                    <span class="text-xs font-bold uppercase tracking-widest text-accent">Dokumentasi Visual</span>
                     <h2 class="serif text-5xl mt-2">Gallery</h2>
                 </div>
-                <a href="<?= site_url('gallery') ?>" class="text-xs font-bold uppercase tracking-widest btn-premium">View All</a>
+                <a href="<?= site_url('gallery') ?>" class="text-xs font-bold uppercase tracking-widest btn-premium">Lihat Semua</a>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <?php foreach ($galleryItems as $idx => $item): ?>
@@ -505,7 +464,7 @@ $navLinks = [
             <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
                 <div class="reveal">
                     <span class="text-xs font-bold uppercase tracking-widest text-accent">Contact</span>
-                    <h2 class="serif text-5xl mt-2 mb-6">Let's Connect</h2>
+                    <h2 class="serif text-5xl mt-2 mb-6">Mari Terhubung</h2>
                     <?php if ($profile['availability'] ?? null): ?><p class="text-gray-500 mb-8"><?= esc($profile['availability']) ?></p><?php endif; ?>
                     <div class="space-y-4 text-sm">
                         <?php if ($contactEmail): ?><p><span class="text-zinc-400 uppercase tracking-widest text-[10px] block">Email</span><a href="mailto:<?= esc($contactEmail, 'attr') ?>" class="btn-premium"><?= esc($contactEmail) ?></a></p><?php endif; ?>
@@ -545,15 +504,15 @@ $navLinks = [
                         <input type="text" name="website" value="" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <label for="contact_name" class="sr-only">Name</label>
-                            <input id="contact_name" type="text" name="name" value="<?= esc(old('name')) ?>" placeholder="Name" class="border bg-white px-5 py-4 outline-none focus:border-black" required>
+                            <input id="contact_name" type="text" name="name" value="<?= esc(old('name')) ?>" placeholder="Nama" class="border bg-white px-5 py-4 outline-none focus:border-black" required>
                             <label for="contact_email" class="sr-only">Email</label>
                             <input id="contact_email" type="email" name="email" value="<?= esc(old('email')) ?>" placeholder="Email" class="border bg-white px-5 py-4 outline-none focus:border-black" required>
                         </div>
                         <label for="contact_subject" class="sr-only">Subject</label>
-                        <input id="contact_subject" type="text" name="subject" value="<?= esc(old('subject')) ?>" placeholder="Subject" class="w-full border bg-white px-5 py-4 outline-none focus:border-black">
+                        <input id="contact_subject" type="text" name="subject" value="<?= esc(old('subject')) ?>" placeholder="Subjek" class="w-full border bg-white px-5 py-4 outline-none focus:border-black">
                         <label for="contact_message" class="sr-only">Message</label>
-                        <textarea id="contact_message" name="message" rows="7" placeholder="Message" class="w-full border bg-white px-5 py-4 outline-none focus:border-black" required><?= esc(old('message')) ?></textarea>
-                        <button type="submit" class="bg-black text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-zinc-800 transition">Send Message</button>
+                        <textarea id="contact_message" name="message" rows="7" placeholder="Pesan" class="w-full border bg-white px-5 py-4 outline-none focus:border-black" required><?= esc(old('message')) ?></textarea>
+                        <button type="submit" class="bg-black text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-zinc-800 transition">Kirim Pesan</button>
                     </form>
                 </div>
             </div>
@@ -583,7 +542,7 @@ $navLinks = [
             </div>
             <div>
                 <h4 class="text-[10px] font-bold uppercase tracking-widest mb-6">Status</h4>
-                <p class="text-sm text-gray-500 leading-relaxed"><?= esc($profile['availability'] ?? 'Portfolio content is managed from the admin dashboard.') ?></p>
+                <p class="text-sm text-gray-500 leading-relaxed"><?= esc($profile['availability'] ?? 'Catatan jaringan, server, dan pengembangan aplikasi.') ?></p>
             </div>
         </div>
         <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-zinc-100 text-[10px] text-zinc-400 uppercase tracking-widest gap-4">

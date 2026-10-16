@@ -1,0 +1,351 @@
+{
+  "profile": {
+    "name": "Muhammad Azril Achdi",
+    "professional_title": "Jaringan & Infrastruktur IT",
+    "headline": "Mahasiswa Informatika | Jaringan Komputer, Server, dan Teknologi IT",
+    "short_bio": "Saya mahasiswa S1 Informatika Universitas Ahmad Dahlan yang berfokus pada jaringan komputer, infrastruktur server, dan teknologi IT. Saya belajar melalui home lab pribadi serta pengembangan aplikasi web dan mobile.",
+    "full_bio": "Latar belakang Teknik Komputer dan Jaringan di SMK Telekomunikasi Telesandi Bekasi membentuk minat saya pada jaringan dan infrastruktur IT. Saat ini saya melanjutkan S1 Informatika di Universitas Ahmad Dahlan.\n\nDalam praktik kerja industri di PT Adhi Persada Properti, saya menangani dukungan teknis perangkat, koneksi LAN dan WiFi, penataan ruang server, serta pengembangan aplikasi PHP dan MySQL.\n\nDi home lab, saya mempelajari segmentasi VLAN dengan MikroTik dan Cisco, virtualisasi Proxmox, layanan DNS Technitium, dan pengoperasian aplikasi pada Debian dengan Docker serta reverse proxy. Dokumentasi di website ini menghubungkan konfigurasi, topologi, dan hasil pemeriksaan yang tersedia.",
+    "career_focus": "Jaringan Komputer, Infrastruktur Server, IT Support, Pengembangan Aplikasi",
+    "location": "Tambun Selatan, Bekasi",
+    "email": "muhammad.azril.achdi@gmail.com",
+    "phone": "081282150702",
+    "availability": "Terbuka untuk diskusi tentang jaringan, server, dan pengembangan aplikasi.",
+    "github_url": "https://github.com/2500018036-ship-it",
+    "website_url": "https://azrilachdi.web.id/"
+  },
+  "social_links": [
+    {
+      "platform": "Email",
+      "label": "muhammad.azril.achdi@gmail.com",
+      "url": "mailto:muhammad.azril.achdi@gmail.com",
+      "sort_order": 1
+    },
+    {
+      "platform": "GitHub",
+      "label": "2500018036-ship-it",
+      "url": "https://github.com/2500018036-ship-it",
+      "sort_order": 2
+    }
+  ],
+  "categories": {
+    "project_categories": [
+      {
+        "name": "Web Application",
+        "slug": "web-application",
+        "sort_order": 1
+      },
+      {
+        "name": "Mobile Application",
+        "slug": "mobile-application",
+        "sort_order": 2
+      }
+    ],
+    "lab_categories": [
+      {
+        "name": "Home Lab",
+        "slug": "homelab",
+        "sort_order": 1
+      }
+    ],
+    "blog_categories": [
+      {
+        "name": "Networking & Home Lab",
+        "slug": "networking",
+        "sort_order": 1
+      },
+      {
+        "name": "Web Development & Deployment",
+        "slug": "web-development",
+        "sort_order": 2
+      }
+    ],
+    "gallery_categories": [
+      {
+        "name": "Home Lab",
+        "slug": "home-lab",
+        "sort_order": 1
+      },
+      {
+        "name": "Proyek",
+        "slug": "proyek",
+        "sort_order": 2
+      }
+    ]
+  },
+  "projects": [
+    {
+      "title": "Website Asseting",
+      "slug": "website-asseting",
+      "category_slug": "web-application",
+      "short_description": "Aplikasi pengelolaan aset dengan dashboard, peminjaman, pengembalian, dan perbaikan untuk konteks PT Adhi Persada Properti.",
+      "description": "Website Asseting mendokumentasikan pengelolaan aset dalam aplikasi berbasis PHP. Screenshot pribadi menampilkan dashboard Persada Properti, ringkasan aset, notifikasi, dan rekap bulanan. Modul pada repository mengonfirmasi pencatatan aset, kategori, departemen, peminjaman, pengembalian, dan repairment.",
+      "problem": "Data aset dan perpindahannya perlu dicatat dalam alur yang saling terhubung agar status aset dapat ditelusuri.",
+      "solution": "Menghubungkan daftar aset dengan transaksi peminjaman, pengembalian, perbaikan, dan ringkasan dashboard.",
+      "architecture": "CodeIgniter 3 dengan controller Admin dan User, model untuk data aset/transaksi, serta database MySQL. Controller aset memuat library QR code dan TCPDF.",
+      "features": "Dashboard ringkasan aset dan rekap bulanan\nPengelolaan aset, kategori, dan departemen\nPeminjaman dan pengembalian\nPencatatan perbaikan\nNotifikasi dan pencetakan QR code",
+      "technologies": "PHP, CodeIgniter 3, MySQL, QR Code, TCPDF",
+      "result": "Fitur dan struktur aplikasi dikonfirmasi melalui source repository serta screenshot pribadi. Jumlah aset pada screenshot tidak dipakai sebagai statistik pencapaian.",
+      "lessons_learned": "Alur aset perlu konsisten dari pencatatan hingga pengembalian. Controller, model, dan relasi database menjadi bagian penting saat menelusuri proses tersebut.",
+      "thumbnail": "media/portfolio/asseting-dashboard.png",
+      "github_url": "https://github.com/2500018036-ship-it/asseting",
+      "is_featured": 1,
+      "sort_order": 1
+    },
+    {
+      "title": "Website Ticketing",
+      "slug": "website-ticketing",
+      "category_slug": "web-application",
+      "short_description": "Antarmuka System Ticketing untuk Adhi Persada Properti, didokumentasikan melalui screenshot proyek pribadi.",
+      "description": "Screenshot proyek menampilkan halaman System Ticketing dengan identitas Adhi Persada Properti. Navigasi yang terlihat meliputi About, Request, Profile, Contact, dan Logout. Halaman ini menjadi bukti visual proyek yang saya tampilkan di portofolio.",
+      "features": "Halaman utama dengan identitas System Ticketing\nNavigasi Request, Profile, Contact, dan Logout",
+      "result": "Tampilan halaman utama tersedia dalam dokumentasi pribadi. Source backend, stack teknologi, alur status tiket, serta tautan deployment belum tersedia untuk diperiksa; detail tersebut tidak dinyatakan sebagai fitur terverifikasi.",
+      "thumbnail": "media/portfolio/ticketing.png",
+      "is_featured": 1,
+      "sort_order": 2
+    },
+    {
+      "title": "MoneyGe",
+      "slug": "moneyge",
+      "category_slug": "mobile-application",
+      "short_description": "Aplikasi Flutter untuk pencatatan keuangan, tugas, tabungan, dan tagihan dengan penyimpanan SQLite lokal.",
+      "description": "MoneyGe menggabungkan pencatatan keuangan dengan pengelolaan kegiatan pribadi. Repository memuat layar finance, task, saving, bill, settings, dan onboarding. Implementasi menggunakan database moneyge.db melalui sqflite; ini adalah proyek aplikasi Flutter.",
+      "architecture": "Antarmuka Flutter/Dart dengan model transaksi, task, tabungan, dan tagihan. DbHelper membuat serta memigrasikan database SQLite. SharedPreferences menyimpan preferensi dan profil lokal.",
+      "features": "Pencatatan pemasukan dan pengeluaran\nMetode pembayaran, transfer, dan target pengeluaran harian\nTugas dan kategori tugas\nTarget tabungan dan pencatatan setoran\nTagihan serta pengingat notifikasi\nPemrosesan input suara dan pengaturan aplikasi",
+      "technologies": "Flutter, Dart, SQLite, sqflite, SharedPreferences, awesome_notifications, speech_to_text, flutter_tts",
+      "result": "Fitur diidentifikasi dari source lib/ dan dependensi pubspec.yaml. Aset yang ditampilkan adalah ikon aplikasi dari repository. Tidak ada klaim jumlah pengguna, publikasi toko aplikasi, atau hasil pengujian perangkat.",
+      "lessons_learned": "Perubahan skema lokal membutuhkan migrasi yang mempertahankan data. Pemisahan model, DbHelper, dan layar membantu menelusuri transaksi serta pengingat.",
+      "thumbnail": "media/portfolio/moneyge-icon.png",
+      "github_url": "https://github.com/2500018036-ship-it/moneyge",
+      "is_featured": 1,
+      "sort_order": 3
+    }
+  ],
+  "labs": [
+    {
+      "title": "Home Lab Pribadi Azril",
+      "slug": "home-lab-azril",
+      "category_slug": "homelab",
+      "short_description": "MikroTik, Cisco SF200-24, Proxmox, Technitium DNS, dan Debian Docker dalam tiga VLAN, dengan jalur publik melalui Azure dan WireGuard.",
+      "objective": "Menghubungkan praktik jaringan komputer, virtualisasi server, pengoperasian aplikasi, serta dokumentasi teknis dari lingkungan pribadi.",
+      "description": "Home lab ini mengikuti sketsa pribadi dan konfigurasi yang tersedia. MikroTik menjadi gateway VLAN; Cisco membagi koneksi management, server, dan client. Cabang server menggunakan Proxmox dengan layanan DNS Technitium dan Debian Web Server sesuai topologi pribadi. Endpoint dan pengaturan Debian diperiksa melalui jaringan lokal pada 16 Oktober 2026.",
+      "topology": "ONT/upstream → ether1 MikroTik (sesuai sketsa).\nether4 MikroTik → GE1 Cisco SF200-24: trunk VLAN 10/20/30 tagged, VLAN 1 untagged/PVID 1.\nCisco GE2 → cabang server VLAN 20; FE1/FE2 → management VLAN 10; FE3 → access point TP-Link/client VLAN 30 sesuai sketsa.\nAzure → WireGuard → MikroTik → Nginx Proxy Manager di Debian → portfolio-web:80.\nTailscale adalah jalur akses pribadi; node dan rutenya belum diperiksa.",
+      "devices": "MikroTik; Cisco SF200-24; access point TP-Link; PC management; Proxmox; Debian Web Server; Technitium DNS; Azure VPS.",
+      "hardware": "Cisco SF200-24 teridentifikasi pada screenshot pengguna. Model router, access point, spesifikasi mesin Proxmox, dan penomoran VM belum diverifikasi.",
+      "software": "Proxmox VE, MikroTik RouterOS, Debian, Technitium DNS, Docker, Nginx Proxy Manager, PHP 8.3, Apache, MariaDB 11.4, WireGuard. Tailscale dicatat sesuai informasi penggunaan pribadi.",
+      "ip_addressing": "VLAN 10: 192.168.10.0/24, gateway 192.168.10.1.\nVLAN 20: 192.168.20.0/24, gateway 192.168.20.1.\nVLAN 30: 192.168.30.0/24, gateway 192.168.30.1.\nProxmox: 192.168.20.200; DNS: 192.168.20.199; Debian: 192.168.20.195.\nwg-azure: 10.10.0.2/24; peer VPS dirujuk sebagai 10.10.0.1.\nPool DHCP tiap VLAN .100–.200; lease 30 menit. Debian teramati memakai DHCP.",
+      "vlan": "vlan10-management, vlan20-server, dan vlan30-client berada pada ether4. GE1 Cisco trunk 1UP/10T/20T/30T; GE2 access PVID 20; FE1/FE2 access PVID 10; FE3 access PVID 30.",
+      "routing": "MikroTik merupakan gateway tiap VLAN. Default route Debian melalui 192.168.20.1. Konfigurasi route aktif di Azure dan hasil counter forwarding router belum diperiksa langsung.",
+      "firewall": "Backup memuat rule yang merujuk pembatasan VLAN 30 menuju Cisco 192.168.10.2, Proxmox TCP 8006, serta Winbox TCP 8291. Ada rule dari VPS menuju 192.168.20.195 TCP 80/443 dan pembatasan ke LAN lain. Efektivitas isolasi saat ini belum diuji dari setiap segmen.",
+      "vpn": "Backup: wg-azure 10.10.0.2/24, endpoint 20.194.8.143:51820, keepalive 25 detik. Dokumentasi deployment menetapkan terminasi HTTPS di Azure lalu trafik melalui WireGuard. Tailscale digunakan sebagai akses VPN pribadi; tidak ada node, ACL, atau subnet route yang diklaim terverifikasi.",
+      "monitoring": "Pemeriksaan alamat dan lease Debian, query DNS ke Technitium, respons endpoint Proxmox, status container, health check, serta HTTP GET domain publik.",
+      "troubleshooting": "Periksa membership VLAN dan PVID, IP/gateway/DNS client, lease DHCP, origin 127.0.0.1:18081 dengan header HTTPS, proxy host portfolio-web:80, serta handshake dan route WireGuard.",
+      "configuration": "ip -brief address show ens18\nip route\ncat /etc/resolv.conf\nsudo dhcpcd -U ens18\nping -c 3 192.168.20.1\ngetent ahostsv4 azrilachdi.web.id",
+      "testing": "SSH Debian berhasil. Lease DHCP dan route dikonfirmasi. Technitium menjawab query DNS. Endpoint Proxmox dikenali sebagai pve-api-daemon. Halaman utama domain publik merespons HTTP 200 saat audit. Koneksi seluruh client VLAN dan ACL Tailscale belum diuji.",
+      "result": "Topologi fisik dari sketsa dicocokkan dengan pemetaan Cisco, VLAN pada backup MikroTik, dan layanan yang dapat diperiksa di Debian. Detail yang belum tersedia diberi batas verifikasi.",
+      "lessons_learned": "Konfigurasi tersimpan dan keadaan aktif perlu dibandingkan. Contohnya, Debian memakai DHCP meskipun sketsa awal menyebut IP statis melalui Winbox. Dokumen juga membedakan akses website publik dari jalur administrasi VPN.",
+      "thumbnail": "media/portfolio/homelab-topology.png",
+      "topology_image": "media/portfolio/homelab-topology.svg",
+      "documentation_url": "https://azrilachdi.web.id/docs/basic-configuration",
+      "is_featured": 1,
+      "sort_order": 1
+    }
+  ],
+  "documentation": [
+    {
+      "slug": "vlan-ip-dhcp",
+      "title": "VLAN, IP Addressing, dan DHCP Home Lab",
+      "summary": "Pemetaan VLAN MikroTik dan Cisco SF200-24, subnet, gateway, serta pool DHCP dari konfigurasi pribadi.",
+      "excerpt": "Pemetaan VLAN MikroTik dan Cisco SF200-24, subnet, gateway, serta pool DHCP dari konfigurasi pribadi.",
+      "category": "Jaringan",
+      "tags": "MikroTik,Cisco,VLAN,DHCP,IP addressing",
+      "author": "Muhammad Azril Achdi",
+      "sort_order": 1,
+      "thumbnail": "media/portfolio/cisco-vlan-membership.png",
+      "featured_image": "media/portfolio/cisco-vlan-membership.png",
+      "content_file": "articles/docs-vlan-ip-dhcp.html"
+    },
+    {
+      "slug": "technitium-dns",
+      "title": "Technitium DNS pada Jaringan Lokal",
+      "summary": "Resolver 192.168.20.199 yang dibagikan oleh DHCP dan digunakan Debian Web Server.",
+      "excerpt": "Resolver 192.168.20.199 yang dibagikan oleh DHCP dan digunakan Debian Web Server.",
+      "category": "DNS",
+      "tags": "Technitium,DNS,DHCP,Debian",
+      "author": "Muhammad Azril Achdi",
+      "sort_order": 2,
+      "thumbnail": "media/portfolio/service-path.svg",
+      "featured_image": "media/portfolio/service-path.png",
+      "content_file": "articles/docs-technitium-dns.html"
+    },
+    {
+      "slug": "debian-ssh-docker",
+      "title": "Debian Web Server, SSH, dan Docker",
+      "summary": "Konfigurasi jaringan ens18, akses SSH, container produksi, dan pemeriksaan log pada server pribadi.",
+      "excerpt": "Konfigurasi jaringan ens18, akses SSH, container produksi, dan pemeriksaan log pada server pribadi.",
+      "category": "Server",
+      "tags": "Debian,SSH,Docker,Server",
+      "author": "Muhammad Azril Achdi",
+      "sort_order": 3,
+      "thumbnail": "media/portfolio/service-path.svg",
+      "featured_image": "media/portfolio/service-path.png",
+      "content_file": "articles/docs-debian-ssh-docker.html"
+    },
+    {
+      "slug": "docker-nginx-proxy-manager",
+      "title": "Docker dan Nginx Proxy Manager untuk Portofolio",
+      "summary": "Alur request, pemisahan database, header HTTPS, serta mekanisme build dan deployment yang dipakai.",
+      "excerpt": "Alur request, pemisahan database, header HTTPS, serta mekanisme build dan deployment yang dipakai.",
+      "category": "Deployment",
+      "tags": "Docker,Nginx Proxy Manager,CodeIgniter,CI/CD",
+      "author": "Muhammad Azril Achdi",
+      "sort_order": 4,
+      "thumbnail": "media/portfolio/service-path.svg",
+      "featured_image": "media/portfolio/service-path.png",
+      "content_file": "articles/docs-docker-nginx-proxy-manager.html"
+    },
+    {
+      "slug": "wireguard-azure-tailscale",
+      "title": "WireGuard Azure dan Akses VPN Tailscale",
+      "summary": "Tunnel wg-azure yang tercatat pada backup MikroTik serta batas verifikasi akses Tailscale.",
+      "excerpt": "Tunnel wg-azure yang tercatat pada backup MikroTik serta batas verifikasi akses Tailscale.",
+      "category": "VPN",
+      "tags": "WireGuard,Azure,Tailscale,VPN",
+      "author": "Muhammad Azril Achdi",
+      "sort_order": 5,
+      "thumbnail": "media/portfolio/service-path.svg",
+      "featured_image": "media/portfolio/service-path.png",
+      "content_file": "articles/docs-wireguard-azure-tailscale.html"
+    },
+    {
+      "slug": "basic-configuration",
+      "title": "Basic Configuration Jaringan dan Server",
+      "summary": "Panduan operasi home lab: VLAN, IP, DHCP, DNS, routing, firewall, SSH, Docker, reverse proxy, dan VPN.",
+      "excerpt": "Panduan operasi home lab: VLAN, IP, DHCP, DNS, routing, firewall, SSH, Docker, reverse proxy, dan VPN.",
+      "category": "Operasi",
+      "tags": "Basic Configuration,Jaringan,Server,Firewall,VPN",
+      "author": "Muhammad Azril Achdi",
+      "sort_order": 6,
+      "thumbnail": "media/portfolio/homelab-topology.png",
+      "featured_image": "media/portfolio/homelab-topology.png",
+      "content_file": "articles/docs-basic-configuration.html"
+    }
+  ],
+  "blog_posts": [
+    {
+      "slug": "homelab-proxmox-mikrotik",
+      "title": "Membangun Home Lab dengan Proxmox dan MikroTik",
+      "excerpt": "Bagaimana saya menghubungkan router, switch Cisco, virtualisasi, DNS, dan layanan web dalam home lab pribadi.",
+      "category_slug": "networking",
+      "author": "Muhammad Azril Achdi",
+      "sort_order": 1,
+      "thumbnail": "media/portfolio/homelab-topology.png",
+      "featured_image": "media/portfolio/homelab-topology.png",
+      "content_file": "articles/blog-homelab-proxmox-mikrotik.html"
+    },
+    {
+      "slug": "implementasi-vlan-cisco-mikrotik",
+      "title": "Implementasi VLAN untuk Segmentasi Jaringan",
+      "excerpt": "Menghubungkan ether4 MikroTik ke GE1 Cisco dan memisahkan VLAN management, server, serta client.",
+      "category_slug": "networking",
+      "author": "Muhammad Azril Achdi",
+      "sort_order": 2,
+      "thumbnail": "media/portfolio/cisco-vlan-membership.png",
+      "featured_image": "media/portfolio/cisco-vlan-membership.png",
+      "content_file": "articles/blog-implementasi-vlan-cisco-mikrotik.html"
+    },
+    {
+      "slug": "technitium-dns-lokal",
+      "title": "Konfigurasi Technitium DNS pada Jaringan Lokal",
+      "excerpt": "Mengikuti alur DNS dari scope DHCP MikroTik sampai resolver yang digunakan Debian.",
+      "category_slug": "networking",
+      "author": "Muhammad Azril Achdi",
+      "sort_order": 3,
+      "thumbnail": "media/portfolio/service-path.svg",
+      "featured_image": "media/portfolio/service-path.png",
+      "content_file": "articles/blog-technitium-dns-lokal.html"
+    },
+    {
+      "slug": "website-docker-nginx-proxy-manager",
+      "title": "Menjalankan Website dengan Docker dan Nginx Proxy Manager",
+      "excerpt": "Pengalaman menjalankan portofolio CodeIgniter dengan database internal, volume persisten, dan proxy berlapis.",
+      "category_slug": "web-development",
+      "author": "Muhammad Azril Achdi",
+      "sort_order": 4,
+      "thumbnail": "media/portfolio/service-path.svg",
+      "featured_image": "media/portfolio/service-path.png",
+      "content_file": "articles/blog-website-docker-nginx-proxy-manager.html"
+    },
+    {
+      "slug": "wireguard-azure-vps",
+      "title": "Mengakses Home Lab melalui WireGuard dan Azure VPS",
+      "excerpt": "Menghubungkan endpoint publik Azure dengan layanan lokal sambil membedakan publikasi web dan akses administrasi.",
+      "category_slug": "networking",
+      "author": "Muhammad Azril Achdi",
+      "sort_order": 5,
+      "thumbnail": "media/portfolio/service-path.svg",
+      "featured_image": "media/portfolio/service-path.png",
+      "content_file": "articles/blog-wireguard-azure-vps.html"
+    },
+    {
+      "slug": "dokumentasi-basic-configuration",
+      "title": "Menyusun Dokumentasi Basic Configuration Jaringan dan Server",
+      "excerpt": "Mencocokkan topologi, konfigurasi perangkat, dan kondisi layanan agar catatan teknis dapat dipakai saat troubleshooting.",
+      "category_slug": "networking",
+      "author": "Muhammad Azril Achdi",
+      "sort_order": 6,
+      "thumbnail": "media/portfolio/homelab-topology.png",
+      "featured_image": "media/portfolio/homelab-topology.png",
+      "content_file": "articles/blog-dokumentasi-basic-configuration.html"
+    }
+  ],
+  "gallery": [
+    {
+      "title": "Topologi Home Lab Pribadi",
+      "image": "media/portfolio/homelab-topology.svg",
+      "description": "Diagram berdasarkan sketsa, backup MikroTik, konfigurasi Cisco, dan pemeriksaan Debian. Keterangan pada diagram membedakan sumber dan batas verifikasi.",
+      "category_slug": "home-lab",
+      "sort_order": 1
+    },
+    {
+      "title": "Cisco SF200-24 — VLAN Membership",
+      "image": "media/portfolio/cisco-vlan-membership.png",
+      "description": "Konfigurasi switch pribadi: GE1 trunk VLAN 10/20/30 dan GE2 access VLAN 20.",
+      "category_slug": "home-lab",
+      "sort_order": 2
+    },
+    {
+      "title": "Cisco SF200-24 — Port Settings",
+      "image": "media/portfolio/cisco-port-settings.png",
+      "description": "PVID FE1/FE2 10, FE3 30, GE1 1, dan GE2 20 pada screenshot pengguna.",
+      "category_slug": "home-lab",
+      "sort_order": 3
+    },
+    {
+      "title": "Website Asseting — Dashboard",
+      "image": "media/portfolio/asseting-dashboard.png",
+      "description": "Screenshot aplikasi Asseting dari dokumentasi proyek pribadi.",
+      "category_slug": "proyek",
+      "sort_order": 4
+    },
+    {
+      "title": "Website Ticketing — Halaman Utama",
+      "image": "media/portfolio/ticketing.png",
+      "description": "Screenshot System Ticketing Adhi Persada Properti dari dokumentasi pribadi.",
+      "category_slug": "proyek",
+      "sort_order": 5
+    }
+  ],
+  "settings": {
+    "site_title": "Muhammad Azril Achdi",
+    "site_description": "Saya mahasiswa S1 Informatika Universitas Ahmad Dahlan yang berfokus pada jaringan komputer, infrastruktur server, dan teknologi IT. Saya belajar melalui home lab pribadi serta pengembangan aplikasi web dan mobile.",
+    "seo_title": "Muhammad Azril Achdi | Jaringan, Server & Home Lab",
+    "seo_description": "Portofolio Muhammad Azril Achdi, mahasiswa Informatika UAD. Proyek Asseting, Ticketing, MoneyGe, serta dokumentasi home lab, jaringan, server, dan deployment.",
+    "seo_keywords": "Muhammad Azril Achdi, Informatika, Home Lab, MikroTik, Cisco, Proxmox, Debian, Docker, Asseting, MoneyGe",
+    "canonical_url": "https://azrilachdi.web.id/",
+    "default_og_image_url": "media/portfolio/homelab-topology.png",
+    "favicon_url": "media/portfolio/favicon.svg",
+    "contact_email": "muhammad.azril.achdi@gmail.com",
+    "contact_phone": "081282150702",
+    "contact_location": "Tambun Selatan, Bekasi"
+  }
+}

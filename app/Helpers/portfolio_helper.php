@@ -7,7 +7,7 @@ if (! function_exists('portfolio_asset_url')) {
     {
         $path = trim((string) $path);
 
-        if ($path === '') {
+        if ($path === '' || preg_match('/(?:placeholder|(?:^|\/)demo[-_])/i', $path)) {
             return $fallback;
         }
 

@@ -46,6 +46,7 @@ class Certificates extends BaseController
             ->join('certificate_categories', 'certificate_categories.id = certificates.category_id', 'left')
             ->where('certificates.slug', $slug)
             ->where('certificates.status', 'published')
+            ->where('certificates.is_dummy', 0)
             ->first();
 
         if (! $certificate) {

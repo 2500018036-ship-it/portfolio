@@ -7,23 +7,23 @@ $dateLabel = $lab['published_at'] ? date('d M Y', strtotime($lab['published_at']
 $thumbnail = $imageUrl($lab['thumbnail'] ?? null);
 $topologyImage = $imageUrl($lab['topology_image'] ?? null);
 $sections = [
-    'Objective'       => $lab['objective'] ?? '',
-    'Description'     => $lab['description'] ?? '',
-    'Topology Notes'  => $lab['topology'] ?? '',
-    'Devices'         => $lab['devices'] ?? '',
-    'Hardware'        => $lab['hardware'] ?? '',
-    'Software'        => $lab['software'] ?? '',
+    'Tujuan'       => $lab['objective'] ?? '',
+    'Deskripsi'     => $lab['description'] ?? '',
+    'Catatan Topologi'  => $lab['topology'] ?? '',
+    'Perangkat'         => $lab['devices'] ?? '',
+    'Perangkat Fisik'        => $lab['hardware'] ?? '',
+    'Perangkat Lunak'        => $lab['software'] ?? '',
     'IP Addressing'   => $lab['ip_addressing'] ?? '',
     'VLAN'            => $lab['vlan'] ?? '',
     'Routing'         => $lab['routing'] ?? '',
     'Firewall'        => $lab['firewall'] ?? '',
     'NAT'             => $lab['nat'] ?? '',
     'VPN'             => $lab['vpn'] ?? '',
-    'Monitoring'      => $lab['monitoring'] ?? '',
-    'Troubleshooting' => $lab['troubleshooting'] ?? '',
-    'Testing'         => $lab['testing'] ?? '',
-    'Result'          => $lab['result'] ?? '',
-    'Lessons Learned' => $lab['lessons_learned'] ?? '',
+    'Pemantauan'      => $lab['monitoring'] ?? '',
+    'Pemeriksaan Gangguan' => $lab['troubleshooting'] ?? '',
+    'Verifikasi'         => $lab['testing'] ?? '',
+    'Hasil'          => $lab['result'] ?? '',
+    'Pembelajaran' => $lab['lessons_learned'] ?? '',
 ];
 ?>
 <!DOCTYPE html>
@@ -112,9 +112,9 @@ $sections = [
         <section class="px-8 md:px-20 pb-24">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
                 <div class="lg:col-span-8">
-                    <div class="aspect-[16/10] bg-zinc-100 overflow-hidden shadow-xl">
+                    <div class="bg-zinc-100 border overflow-hidden shadow-xl">
                         <?php if ($topologyImage): ?>
-                            <img src="<?= esc($topologyImage, 'attr') ?>" alt="<?= esc($lab['title'], 'attr') ?> topology" class="w-full h-full object-contain bg-white" loading="eager" decoding="async" onerror="this.classList.add('hidden');this.nextElementSibling.classList.remove('hidden')">
+                            <a href="<?= esc($topologyImage, 'attr') ?>" target="_blank" rel="noopener" aria-label="Buka diagram topologi ukuran penuh"><img src="<?= esc($topologyImage, 'attr') ?>" alt="<?= esc($lab['title'], 'attr') ?> topology" class="w-full h-auto object-contain bg-white" loading="eager" decoding="async" onerror="this.classList.add('hidden');this.nextElementSibling?.classList.remove('hidden')"></a>
                             <div class="hidden w-full h-full bg-zinc-200 items-center justify-center p-8 text-center">
                                 <span class="serif text-4xl"><?= esc($lab['title']) ?></span>
                             </div>
@@ -131,6 +131,7 @@ $sections = [
                     </div>
                 </div>
                 <aside class="lg:col-span-4">
+                    <p class="text-sm text-zinc-500 mb-6 leading-relaxed">Klik gambar untuk membuka diagram ukuran penuh. Keterangan sumber dan batas verifikasi tercantum di bagian bawah diagram.</p>
                     <dl class="space-y-6 text-sm">
                         <?php if ($lab['category_name']): ?>
                             <div>
@@ -147,7 +148,7 @@ $sections = [
                     </dl>
                     <?php if ($lab['documentation_url']): ?>
                         <div class="mt-10">
-                            <a href="<?= esc($lab['documentation_url'], 'attr') ?>" target="_blank" rel="noopener" class="bg-black text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-zinc-800 transition">External Docs</a>
+                            <a href="<?= esc($lab['documentation_url'], 'attr') ?>" target="_blank" rel="noopener" class="bg-black text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-zinc-800 transition">Basic Configuration</a>
                         </div>
                     <?php endif; ?>
                 </aside>
@@ -168,7 +169,7 @@ $sections = [
 
                     <?php if ($lab['configuration']): ?>
                         <article>
-                            <span class="text-xs font-bold uppercase tracking-widest text-accent">Configuration Commands</span>
+                            <span class="text-xs font-bold uppercase tracking-widest text-accent">Perintah Pemeriksaan</span>
                             <pre class="mt-4 bg-zinc-950 text-zinc-100 p-6 overflow-x-auto text-sm leading-relaxed"><code><?= esc($lab['configuration']) ?></code></pre>
                         </article>
                     <?php endif; ?>
@@ -210,7 +211,7 @@ $sections = [
         <?php if ($images): ?>
             <section class="px-8 md:px-20 pb-24">
                 <span class="text-xs font-bold uppercase tracking-widest text-accent">Lab Images</span>
-                <h2 class="serif text-4xl mt-2 mb-10">Documentation Gallery</h2>
+                <h2 class="serif text-4xl mt-2 mb-10">Dokumentasi Perangkat</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <?php foreach ($images as $image): ?>
                         <?php $src = $imageUrl($image['image'] ?? null); ?>

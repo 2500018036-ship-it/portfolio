@@ -1,0 +1,21 @@
+<p>Portofolio ini menggunakan CodeIgniter 4, PHP 8.3, Apache, dan MariaDB 11.4. Image aplikasi dibangun melalui Dockerfile di repository. Nginx Proxy Manager meneruskan domain azrilachdi.web.id ke alias container portfolio-web pada port 80.</p><figure><a href="/media/portfolio/service-path.svg" target="_blank" rel="noopener"><img src="/media/portfolio/service-path.svg" alt="Alur request: HTTPS di Azure, WireGuard, Nginx Proxy Manager, lalu container portofolio." loading="lazy"></a><figcaption>Alur request: HTTPS di Azure, WireGuard, Nginx Proxy Manager, lalu container portofolio.</figcaption></figure><h2 id="compose">Pemisahan akses aplikasi dan database</h2><pre><code>services:
+  app:
+    ports:
+      - &quot;127.0.0.1:${APP_PORT:-18081}:80&quot;
+    networks:
+      backend:
+      proxy:
+        aliases:
+          - portfolio-web
+networks:
+  backend:
+    internal: true
+  proxy:
+    external: true
+    name: ${PROXY_NETWORK:-web-proxy}</code></pre><p>Ini adalah bagian Compose yang digunakan proyek, bukan definisi stack lengkap. MariaDB tidak membuka port ke host. Volume produksi menyimpan database di /mnt/data/storage/portfolio/mysql, unggahan di uploads, serta log/session/dokumen privat di writable. Build aplikasi tidak mengganti isi volume tersebut.</p><h2 id="https">Meneruskan informasi HTTPS</h2><p>TLS diakhiri pada Nginx Azure. Proxy harus mempertahankan Host dan X-Forwarded-Proto agar aplikasi mengetahui skema asli pengunjung. Konfigurasi Nginx Proxy Manager yang diperiksa memakai portfolio_original_scheme untuk meneruskan skema asli ke aplikasi. Cookie produksi menggunakan Secure dan HttpOnly.</p><pre><code>curl --fail --header &#x27;X-Forwarded-Proto: https&#x27; http://127.0.0.1:18081/ -o /dev/null</code></pre><h2 id="ci">Build dan deployment</h2><p>Push ke main menjalankan Portfolio CI: validasi Compose dan shell, build image, pemeriksaan sintaks PHP, migrasi database kosong, seeding, dan smoke test. Timer Debian memeriksa main setiap dua menit dan hanya memasang commit dengan CI sukses untuk SHA yang sama. Setiap deployment membuat snapshot database sebelum migrasi, kemudian memeriksa kesehatan aplikasi. Jika pemeriksaan gagal, script mencoba mengembalikan image aplikasi sebelumnya.</p><pre><code>cd /mnt/data/docker-compose/portfolio/repository
+sudo docker compose --env-file ../runtime.env config --quiet
+sudo docker compose --env-file ../runtime.env ps
+sudo docker compose --env-file ../runtime.env logs --tail=50 app
+curl --fail --header &#x27;X-Forwarded-Proto: https&#x27; http://127.0.0.1:18081/ -o /dev/null
+sudo systemctl status portfolio-deploy.timer --no-pager
+sudo journalctl -u portfolio-deploy.service -n 50 --no-pager</code></pre><h2 id="diagnosis">Memisahkan sumber gangguan</h2><p>Jika origin di 127.0.0.1:18081 berhasil tetapi domain gagal, periksa proxy, tunnel, DNS, dan TLS secara berurutan. Jika origin gagal, baca log aplikasi dan koneksi database. Pemeriksaan HTTP lokal harus memakai header skema yang sama dengan health check proyek; hasil tanpa header tersebut tidak selalu setara dengan jalur publik.</p>

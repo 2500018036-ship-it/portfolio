@@ -145,7 +145,7 @@ $imageUrl = $certificate['certificate_image'] ? site_url('certificates/' . $cert
         <?php if ($certificate['description']): ?>
             <section class="px-8 md:px-20 pb-24">
                 <div class="max-w-3xl">
-                    <span class="text-xs font-bold uppercase tracking-widest text-accent">Description</span>
+                    <span class="text-xs font-bold uppercase tracking-widest text-accent">Deskripsi</span>
                     <div class="text-lg text-zinc-600 leading-relaxed mt-4"><?= nl2br(esc($certificate['description'])) ?></div>
                 </div>
             </section>

@@ -14,6 +14,7 @@ class Projects extends BaseController
             ->join('project_categories', 'project_categories.id = projects.category_id', 'left')
             ->where('projects.slug', $slug)
             ->where('projects.status', 'published')
+            ->where('projects.is_dummy', 0)
             ->first();
 
         if (! $project) {

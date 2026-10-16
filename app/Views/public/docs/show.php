@@ -20,6 +20,7 @@ $tags = array_values(array_filter(array_map('trim', explode(',', (string) ($docu
     <meta property="og:type" content="article">
     <meta property="og:url" content="<?= esc($canonicalUrl, 'attr') ?>">
     <?php if ($metaImage): ?><meta property="og:image" content="<?= esc($metaImage, 'attr') ?>"><?php endif; ?>
+    <link rel="stylesheet" href="<?= base_url('assets/css/articles.css') ?>?v=<?= substr(hash_file('sha256', FCPATH . 'assets/css/articles.css'), 0, 12) ?>">
     <link rel="icon" href="<?= esc($favicon, 'attr') ?>">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
@@ -71,7 +72,7 @@ $tags = array_values(array_filter(array_map('trim', explode(',', (string) ($docu
 
         <section class="px-8 md:px-20 pb-20">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-                <article class="lg:col-span-8 article-content">
+                <article class="lg:col-span-8 min-w-0 article-content">
                     <?= $document['content'] ?: '<p>Documentation content belum tersedia.</p>' ?>
                 </article>
                 <aside class="lg:col-span-4">
@@ -86,7 +87,7 @@ $tags = array_values(array_filter(array_map('trim', explode(',', (string) ($docu
 
                     <?php if ($relatedDocs): ?>
                         <div class="border p-6 mb-6">
-                            <p class="text-[10px] uppercase tracking-widest text-zinc-400 mb-4">Related Docs</p>
+                            <p class="text-[10px] uppercase tracking-widest text-zinc-400 mb-4">Dokumentasi Terkait</p>
                             <div class="space-y-4">
                                 <?php foreach ($relatedDocs as $item): ?><a href="<?= site_url('docs/' . $item['slug']) ?>" class="block serif text-xl hover:text-accent"><?= esc($item['title']) ?></a><?php endforeach; ?>
                             </div>
@@ -98,7 +99,7 @@ $tags = array_values(array_filter(array_map('trim', explode(',', (string) ($docu
 
         <?php if ($relatedProjects || $relatedLabs): ?>
             <section class="px-8 md:px-20 pb-24">
-                <span class="text-xs font-bold uppercase tracking-widest text-accent">Related Work</span>
+                <span class="text-xs font-bold uppercase tracking-widest text-accent">Karya Terkait</span>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
                     <?php foreach ($relatedProjects as $item): ?><a href="<?= site_url('projects/' . $item['slug']) ?>" class="border p-6 block hover:bg-black hover:text-white transition"><p class="text-[10px] uppercase tracking-widest text-zinc-400">Project</p><h3 class="serif text-2xl mt-3"><?= esc($item['title']) ?></h3></a><?php endforeach; ?>
                     <?php foreach ($relatedLabs as $item): ?><a href="<?= site_url('labs/' . $item['slug']) ?>" class="border p-6 block hover:bg-black hover:text-white transition"><p class="text-[10px] uppercase tracking-widest text-zinc-400">Lab</p><h3 class="serif text-2xl mt-3"><?= esc($item['title']) ?></h3></a><?php endforeach; ?>

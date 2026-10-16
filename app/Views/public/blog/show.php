@@ -19,6 +19,7 @@ $metaImage = $ogImage ?? $featured;
     <meta property="og:type" content="article">
     <meta property="og:url" content="<?= esc($canonicalUrl, 'attr') ?>">
     <?php if ($metaImage): ?><meta property="og:image" content="<?= esc($metaImage, 'attr') ?>"><?php endif; ?>
+    <link rel="stylesheet" href="<?= base_url('assets/css/articles.css') ?>?v=<?= substr(hash_file('sha256', FCPATH . 'assets/css/articles.css'), 0, 12) ?>">
     <link rel="icon" href="<?= esc($favicon, 'attr') ?>">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
@@ -54,7 +55,6 @@ $metaImage = $ogImage ?? $featured;
                     <?php if ($post['category_name']): ?><span class="text-xs font-bold uppercase tracking-widest text-accent"><?= esc($post['category_name']) ?></span><?php endif; ?>
                     <?php if ($post['published_at']): ?><span class="text-xs font-bold uppercase tracking-widest text-zinc-400"><?= esc(date('d M Y', strtotime($post['published_at']))) ?></span><?php endif; ?>
                     <?php if ($post['author']): ?><span class="text-xs font-bold uppercase tracking-widest text-zinc-400"><?= esc($post['author']) ?></span><?php endif; ?>
-                    <span class="text-xs font-bold uppercase tracking-widest text-zinc-400"><?= esc((string) ($post['views_count'] ?? 0)) ?> views</span>
                 </div>
                 <h1 class="serif text-5xl md:text-7xl mt-3 mb-6 leading-tight"><?= esc($post['title']) ?></h1>
                 <?php if ($post['excerpt']): ?><p class="text-xl text-zinc-500 max-w-3xl"><?= esc($post['excerpt']) ?></p><?php endif; ?>
@@ -71,7 +71,7 @@ $metaImage = $ogImage ?? $featured;
 
         <section class="px-8 md:px-20 pb-20">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-                <article class="lg:col-span-8 article-content">
+                <article class="lg:col-span-8 min-w-0 article-content">
                     <?= $post['content'] ?: '<p>Blog content belum tersedia.</p>' ?>
                 </article>
                 <aside class="lg:col-span-4">
@@ -86,7 +86,7 @@ $metaImage = $ogImage ?? $featured;
 
                     <?php if ($relatedPosts): ?>
                         <div class="border p-6 mb-6">
-                            <p class="text-[10px] uppercase tracking-widest text-zinc-400 mb-4">Related Posts</p>
+                            <p class="text-[10px] uppercase tracking-widest text-zinc-400 mb-4">Artikel Terkait</p>
                             <div class="space-y-4">
                                 <?php foreach ($relatedPosts as $item): ?><a href="<?= site_url('blog/' . $item['slug']) ?>" class="block serif text-xl hover:text-accent"><?= esc($item['title']) ?></a><?php endforeach; ?>
                             </div>
@@ -98,7 +98,7 @@ $metaImage = $ogImage ?? $featured;
 
         <?php if ($relatedDocs || $relatedProjects || $relatedLabs): ?>
             <section class="px-8 md:px-20 pb-24">
-                <span class="text-xs font-bold uppercase tracking-widest text-accent">Related Content</span>
+                <span class="text-xs font-bold uppercase tracking-widest text-accent">Bacaan Terkait</span>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
                     <?php foreach ($relatedDocs as $item): ?><a href="<?= site_url('docs/' . $item['slug']) ?>" class="border p-6 block hover:bg-black hover:text-white transition"><p class="text-[10px] uppercase tracking-widest text-zinc-400">Doc</p><h3 class="serif text-2xl mt-3"><?= esc($item['title']) ?></h3></a><?php endforeach; ?>
                     <?php foreach ($relatedProjects as $item): ?><a href="<?= site_url('projects/' . $item['slug']) ?>" class="border p-6 block hover:bg-black hover:text-white transition"><p class="text-[10px] uppercase tracking-widest text-zinc-400">Project</p><h3 class="serif text-2xl mt-3"><?= esc($item['title']) ?></h3></a><?php endforeach; ?>

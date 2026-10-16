@@ -13,7 +13,8 @@ class Docs extends BaseController
         $query = trim((string) $this->request->getGet('q'));
         $category = trim((string) $this->request->getGet('category'));
         $model = (new DocumentationModel())
-            ->where('status', 'published');
+            ->where('status', 'published')
+            ->where('is_dummy', 0);
 
         if ($query !== '') {
             $model->groupStart()
@@ -41,7 +42,7 @@ class Docs extends BaseController
 
         return view('public/docs/index', array_merge($viewDefaults, [
             'title'           => 'Technical Documentation | ' . $siteTitle,
-            'metaDescription' => 'Technical documentation, notes, and implementation writeups.',
+            'metaDescription' => 'Dokumentasi konfigurasi jaringan dan server pada home lab Muhammad Azril Achdi: VLAN, IP, DHCP, DNS, SSH, Docker, reverse proxy, dan VPN.',
             'canonicalUrl'    => site_url('docs'),
             'siteTitle'       => $siteTitle,
             'docs'            => $docs,
@@ -56,6 +57,7 @@ class Docs extends BaseController
         $document = (new DocumentationModel())
             ->where('slug', $slug)
             ->where('status', 'published')
+            ->where('is_dummy', 0)
             ->first();
 
         if (! $document) {
@@ -85,6 +87,7 @@ class Docs extends BaseController
         return (new DocumentationModel())
             ->select('category')
             ->where('status', 'published')
+            ->where('is_dummy', 0)
             ->where('category !=', '')
             ->groupBy('category')
             ->orderBy('category', 'ASC')
@@ -95,7 +98,8 @@ class Docs extends BaseController
     {
         $model = (new DocumentationModel())
             ->where('id !=', $document['id'])
-            ->where('status', 'published');
+            ->where('status', 'published')
+            ->where('is_dummy', 0);
 
         if ($document['category']) {
             $model->where('category', $document['category']);
@@ -111,6 +115,7 @@ class Docs extends BaseController
     {
         return (new ProjectModel())
             ->where('status', 'published')
+            ->where('is_dummy', 0)
             ->where('is_featured', 1)
             ->orderBy('sort_order', 'ASC')
             ->orderBy('published_at', 'DESC')
@@ -122,6 +127,7 @@ class Docs extends BaseController
     {
         return (new LabModel())
             ->where('status', 'published')
+            ->where('is_dummy', 0)
             ->where('is_featured', 1)
             ->orderBy('sort_order', 'ASC')
             ->orderBy('published_at', 'DESC')

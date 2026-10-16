@@ -22,11 +22,13 @@ class Home extends BaseController
     {
         $profile = (new ProfileModel())
             ->where('status', 'active')
+            ->where('is_dummy', 0)
             ->orderBy('id', 'ASC')
             ->first();
 
         $socialLinks = (new SocialLinkModel())
             ->where('status', 'active')
+            ->where('is_dummy', 0)
             ->orderBy('sort_order', 'ASC')
             ->orderBy('platform', 'ASC')
             ->findAll();
@@ -35,8 +37,10 @@ class Home extends BaseController
             ->select('skills.*, skill_categories.name AS category_name')
             ->join('skill_categories', 'skill_categories.id = skills.category_id', 'left')
             ->where('skills.status', 'active')
+            ->where('skills.is_dummy', 0)
             ->groupStart()
                 ->where('skill_categories.status', 'active')
+            ->where('skill_categories.is_dummy', 0)
                 ->orWhere('skill_categories.id', null)
             ->groupEnd()
             ->orderBy('skill_categories.sort_order', 'ASC')
@@ -53,6 +57,7 @@ class Home extends BaseController
             ->select('projects.*, project_categories.name AS category_name')
             ->join('project_categories', 'project_categories.id = projects.category_id', 'left')
             ->where('projects.status', 'published')
+            ->where('projects.is_dummy', 0)
             ->where('projects.is_featured', 1)
             ->orderBy('projects.sort_order', 'ASC')
             ->orderBy('projects.published_at', 'DESC')
@@ -61,6 +66,7 @@ class Home extends BaseController
 
         $experience = (new ExperienceModel())
             ->where('status', 'published')
+            ->where('is_dummy', 0)
             ->orderBy('sort_order', 'ASC')
             ->orderBy('start_date', 'DESC')
             ->limit(4)
@@ -68,6 +74,7 @@ class Home extends BaseController
 
         $education = (new EducationModel())
             ->where('status', 'published')
+            ->where('is_dummy', 0)
             ->orderBy('sort_order', 'ASC')
             ->orderBy('start_date', 'DESC')
             ->limit(4)
@@ -75,6 +82,7 @@ class Home extends BaseController
 
         $achievements = (new AchievementModel())
             ->where('status', 'published')
+            ->where('is_dummy', 0)
             ->orderBy('sort_order', 'ASC')
             ->orderBy('date', 'DESC')
             ->limit(4)
@@ -84,13 +92,15 @@ class Home extends BaseController
             ->select('certificates.*, certificate_categories.name AS category_name')
             ->join('certificate_categories', 'certificate_categories.id = certificates.category_id', 'left')
             ->where('certificates.status', 'published')
+            ->where('certificates.is_dummy', 0)
             ->orderBy('certificates.sort_order', 'ASC')
             ->orderBy('certificates.issue_date', 'DESC')
-            ->limit(4)
+            ->limit(6)
             ->findAll();
 
         $documents = (new DocumentModel())
             ->where('status', 'published')
+            ->where('is_dummy', 0)
             ->where('visibility', 'public')
             ->orderBy('sort_order', 'ASC')
             ->orderBy('uploaded_at', 'DESC')
@@ -101,6 +111,7 @@ class Home extends BaseController
             ->select('labs.*, lab_categories.name AS category_name')
             ->join('lab_categories', 'lab_categories.id = labs.category_id', 'left')
             ->where('labs.status', 'published')
+            ->where('labs.is_dummy', 0)
             ->where('labs.is_featured', 1)
             ->orderBy('labs.sort_order', 'ASC')
             ->orderBy('labs.published_at', 'DESC')
@@ -110,6 +121,7 @@ class Home extends BaseController
 
         $documentation = (new DocumentationModel())
             ->where('status', 'published')
+            ->where('is_dummy', 0)
             ->orderBy('sort_order', 'ASC')
             ->orderBy('published_at', 'DESC')
             ->limit(4)
@@ -119,6 +131,7 @@ class Home extends BaseController
             ->select('blog_posts.*, blog_categories.name AS category_name')
             ->join('blog_categories', 'blog_categories.id = blog_posts.category_id', 'left')
             ->where('blog_posts.status', 'published')
+            ->where('blog_posts.is_dummy', 0)
             ->orderBy('blog_posts.sort_order', 'ASC')
             ->orderBy('blog_posts.published_at', 'DESC')
             ->limit(4)
@@ -128,6 +141,7 @@ class Home extends BaseController
             ->select('gallery.*, gallery_categories.name AS category_name')
             ->join('gallery_categories', 'gallery_categories.id = gallery.category_id', 'left')
             ->where('gallery.status', 'published')
+            ->where('gallery.is_dummy', 0)
             ->orderBy('gallery.sort_order', 'ASC')
             ->orderBy('gallery.date', 'DESC')
             ->limit(6)

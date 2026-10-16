@@ -17,14 +17,14 @@ $period = static function (?string $start, ?string $end): string {
 $thumbnail = $imageUrl($project['thumbnail'] ?? null);
 $dateLabel = $period($project['start_date'] ?? null, $project['end_date'] ?? null);
 $sections = [
-    'Description'     => $project['description'] ?? '',
-    'Problem'         => $project['problem'] ?? '',
-    'Solution'        => $project['solution'] ?? '',
-    'Architecture'    => $project['architecture'] ?? '',
-    'Features'        => $project['features'] ?? '',
-    'Challenges'      => $project['challenges'] ?? '',
-    'Result'          => $project['result'] ?? '',
-    'Lessons Learned' => $project['lessons_learned'] ?? '',
+    'Deskripsi'     => $project['description'] ?? '',
+    'Kebutuhan'         => $project['problem'] ?? '',
+    'Implementasi'        => $project['solution'] ?? '',
+    'Arsitektur'    => $project['architecture'] ?? '',
+    'Fitur Terverifikasi'        => $project['features'] ?? '',
+    'Tantangan'      => $project['challenges'] ?? '',
+    'Hasil'          => $project['result'] ?? '',
+    'Pembelajaran' => $project['lessons_learned'] ?? '',
 ];
 ?>
 <!DOCTYPE html>
@@ -130,7 +130,7 @@ $sections = [
                     <dl class="space-y-6 text-sm">
                         <?php if ($project['technologies']): ?>
                             <div>
-                                <dt class="text-[10px] uppercase tracking-widest text-zinc-400 mb-2">Technologies</dt>
+                                <dt class="text-[10px] uppercase tracking-widest text-zinc-400 mb-2">Teknologi</dt>
                                 <dd><?= nl2br(esc($project['technologies'])) ?></dd>
                             </div>
                         <?php endif; ?>
@@ -167,8 +167,8 @@ $sections = [
 
         <?php if ($images): ?>
             <section class="px-8 md:px-20 pb-24">
-                <span class="text-xs font-bold uppercase tracking-widest text-accent">Screenshots</span>
-                <h2 class="serif text-4xl mt-2 mb-10">Project Images</h2>
+                <span class="text-xs font-bold uppercase tracking-widest text-accent">Dokumentasi Visual</span>
+                <h2 class="serif text-4xl mt-2 mb-10">Dokumentasi Proyek</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <?php foreach ($images as $image): ?>
                         <?php $src = $imageUrl($image['image'] ?? null); ?>

@@ -13,7 +13,8 @@ class Gallery extends BaseController
         $model = (new GalleryModel())
             ->select('gallery.*, gallery_categories.name AS category_name, gallery_categories.slug AS category_slug')
             ->join('gallery_categories', 'gallery_categories.id = gallery.category_id', 'left')
-            ->where('gallery.status', 'published');
+            ->where('gallery.status', 'published')
+            ->where('gallery.is_dummy', 0);
 
         if ($category !== '') {
             $model->where('gallery_categories.slug', $category);
@@ -30,11 +31,13 @@ class Gallery extends BaseController
 
         return view('public/gallery/index', array_merge($viewDefaults, [
             'title'           => 'Gallery | ' . $siteTitle,
-            'metaDescription' => 'Portfolio gallery and visual documentation.',
+            'metaDescription' => 'Topologi home lab, konfigurasi Cisco SF200-24, screenshot proyek, dan sertifikat Muhammad Azril Achdi.',
             'canonicalUrl'    => site_url('gallery'),
             'siteTitle'       => $siteTitle,
             'items'           => $items,
-            'categories'      => (new GalleryCategoryModel())->where('status', 'active')->orderBy('sort_order', 'ASC')->orderBy('name', 'ASC')->findAll(),
+            'categories'      => (new GalleryCategoryModel())
+                ->where('status', 'active')->where('is_dummy', 0)
+                ->orderBy('sort_order', 'ASC')->orderBy('name', 'ASC')->findAll(),
             'category'        => $category,
         ]));
     }
@@ -46,6 +49,7 @@ class Gallery extends BaseController
             ->join('gallery_categories', 'gallery_categories.id = gallery.category_id', 'left')
             ->where('gallery.id', $id)
             ->where('gallery.status', 'published')
+            ->where('gallery.is_dummy', 0)
             ->first();
 
         if (! $item) {
@@ -74,7 +78,8 @@ class Gallery extends BaseController
             ->select('gallery.*, gallery_categories.name AS category_name')
             ->join('gallery_categories', 'gallery_categories.id = gallery.category_id', 'left')
             ->where('gallery.id !=', $item['id'])
-            ->where('gallery.status', 'published');
+            ->where('gallery.status', 'published')
+            ->where('gallery.is_dummy', 0);
 
         if ($item['category_id']) {
             $model->where('gallery.category_id', $item['category_id']);

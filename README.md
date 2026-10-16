@@ -10,6 +10,10 @@ yang lulus. Database, unggahan, dan konfigurasi produksi berada di luar reposito
 
 Panduan operasi, deployment, backup, dan rollback: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
+Konten terverifikasi, sumber proyek, dan batas pemeriksaan konfigurasi:
+[docs/CONTENT_SOURCES.md](docs/CONTENT_SOURCES.md). Bundle konten berada di
+`app/Content/`; gambar dan diagram berada di `public/media/portfolio/`.
+
 ## Tentang framework
 
 ## What is CodeIgniter?

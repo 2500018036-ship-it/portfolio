@@ -82,10 +82,10 @@ abstract class BaseController extends Controller
         $settings ??= $this->publicSettings();
 
         return [
-            'siteTitle'      => trim((string) ($settings['site_title'] ?? '')) ?: 'Professional Portfolio',
-            'siteDescription'=> trim((string) ($settings['site_description'] ?? '')) ?: 'Professional portfolio and technical documentation.',
+            'siteTitle'      => trim((string) ($settings['site_title'] ?? '')) ?: 'Muhammad Azril Achdi',
+            'siteDescription'=> trim((string) ($settings['site_description'] ?? '')) ?: 'Portofolio jaringan, server, home lab, dan pengembangan aplikasi Muhammad Azril Achdi.',
             'siteLogo'       => $this->publicAssetUrl($settings['logo_url'] ?? null),
-            'favicon'        => $this->publicAssetUrl($settings['favicon_url'] ?? null, base_url('favicon.ico')),
+            'favicon'        => $this->publicAssetUrl($settings['favicon_url'] ?? null, base_url('media/portfolio/favicon.svg')),
             'defaultOgImage' => $this->publicAssetUrl($settings['default_og_image_url'] ?? null),
             'contactEmail'   => trim((string) ($settings['contact_email'] ?? '')),
             'contactPhone'   => trim((string) ($settings['contact_phone'] ?? '')),

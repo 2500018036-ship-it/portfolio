@@ -54,6 +54,8 @@ jobs:
             curl --fail --silent --show-error --header 'X-Forwarded-Proto: https' "http://127.0.0.1:18081$path" -o /dev/null
           done
           test "$(curl -s -H 'X-Forwarded-Proto: https' -o /dev/null -w '%{http_code}' http://127.0.0.1:18081/admin)" = 302
+      - name: Audit published content and links
+        run: python3 tests/verify_public_content.py http://localhost:18081/ --skip-private-files
       - name: Diagnostics
         if: failure()
         run: docker compose logs --tail=100

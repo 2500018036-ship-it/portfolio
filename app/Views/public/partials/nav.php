@@ -1,21 +1,21 @@
 <?php
-$brandTitle = trim((string) ($siteTitle ?? 'Professional Portfolio'));
+$brandTitle = trim((string) ($siteTitle ?? 'Muhammad Azril Achdi'));
 $brandLogo = trim((string) ($siteLogo ?? ''));
 $homeUrl = rtrim(site_url('/'), '/');
 $anchor = static fn (string $id): string => $homeUrl . '/#' . $id;
 $links = [
-    ['Home', site_url('/')],
-    ['About', $anchor('about')],
-    ['Skills', $anchor('skills')],
-    ['Projects', $anchor('projects')],
-    ['Labs', $anchor('labs')],
-    ['Certificates', $anchor('certificates')],
-    ['Experience', $anchor('experience')],
-    ['Education', $anchor('education')],
-    ['Documentation', site_url('docs')],
+    ['Beranda', site_url('/')],
+    ['Profil', $anchor('about')],
+    ['Keahlian', $anchor('skills')],
+    ['Proyek', $anchor('projects')],
+    ['Home Lab', $anchor('labs')],
+    ['Sertifikat', $anchor('certificates')],
+    ['Pengalaman', $anchor('experience')],
+    ['Pendidikan', $anchor('education')],
+    ['Dokumentasi', site_url('docs')],
     ['Blog', site_url('blog')],
-    ['Gallery', site_url('gallery')],
-    ['Contact', $anchor('contact')],
+    ['Galeri', site_url('gallery')],
+    ['Kontak', $anchor('contact')],
 ];
 ?>
 <style>

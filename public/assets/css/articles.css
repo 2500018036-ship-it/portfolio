@@ -1,0 +1,24 @@
+.article-content { min-width: 0; overflow-wrap: anywhere; }
+.article-content > * + * { margin-top: 1.25rem; }
+.article-content h2 { scroll-margin-top: 7rem; }
+.article-content ul, .article-content ol { padding-left: 1.5rem; }
+.article-content ul { list-style: disc; }
+.article-content ol { list-style: decimal; }
+.article-content li + li { margin-top: .5rem; }
+.article-content pre { max-width: 100%; white-space: pre; overflow-wrap: normal; }
+.article-content pre code { color: inherit; }
+.article-content .table-scroll { max-width: 100%; overflow-x: auto; }
+.article-content table { min-width: 34rem; }
+.article-content th { background: #faf8f2; }
+.article-content figure { margin: 2rem 0; }
+.article-content figcaption { font-size: .85rem; color: #71717a; line-height: 1.7; }
+.article-content .evidence-note { border-left: 3px solid #c5a059; padding: 1rem 1.25rem; background: #faf8f2; font-size: .95rem; }
+.article-content .article-toc { border: 1px solid #e4e4e7; padding: 1.25rem; }
+.article-content .article-toc a { display: block; margin: .45rem 0; }
+.topology-link { display: block; }
+.topology-link img { width: 100%; height: auto; }
+#contact a, footer a { overflow-wrap: anywhere; }
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto !important; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}

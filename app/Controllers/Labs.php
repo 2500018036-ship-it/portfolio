@@ -15,6 +15,7 @@ class Labs extends BaseController
             ->join('lab_categories', 'lab_categories.id = labs.category_id', 'left')
             ->where('labs.slug', $slug)
             ->where('labs.status', 'published')
+            ->where('labs.is_dummy', 0)
             ->first();
 
         if (! $lab) {

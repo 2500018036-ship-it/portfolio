@@ -11,6 +11,7 @@ class Documents extends BaseController
         $document = (new DocumentModel())
             ->where('id', $id)
             ->where('status', 'published')
+            ->where('is_dummy', 0)
             ->where('visibility', 'public')
             ->first();
 

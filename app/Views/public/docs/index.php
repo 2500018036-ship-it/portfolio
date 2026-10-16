@@ -17,6 +17,7 @@ $imageUrl = static function (?string $path): ?string {
     <meta property="og:type" content="website">
     <meta property="og:url" content="<?= esc($canonicalUrl, 'attr') ?>">
     <?php if ($defaultOgImage ?? null): ?><meta property="og:image" content="<?= esc($defaultOgImage, 'attr') ?>"><?php endif; ?>
+    <link rel="stylesheet" href="<?= base_url('assets/css/articles.css') ?>?v=<?= substr(hash_file('sha256', FCPATH . 'assets/css/articles.css'), 0, 12) ?>">
     <link rel="icon" href="<?= esc($favicon, 'attr') ?>">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
@@ -37,24 +38,24 @@ $imageUrl = static function (?string $path): ?string {
     <main class="pt-32">
         <section class="px-8 md:px-20 pb-16">
             <div class="max-w-4xl">
-                <span class="text-xs font-bold uppercase tracking-widest text-accent">Knowledge Base</span>
-                <h1 class="serif text-5xl md:text-7xl mt-3 mb-6 leading-tight">Technical Documentation</h1>
-                <p class="text-xl text-zinc-500 max-w-3xl">Implementation notes, technical references, and problem-solving writeups.</p>
+                <span class="text-xs font-bold uppercase tracking-widest text-accent">Dokumentasi Implementasi</span>
+                <h1 class="serif text-5xl md:text-7xl mt-3 mb-6 leading-tight">Dokumentasi Teknis</h1>
+                <p class="text-xl text-zinc-500 max-w-3xl">Konfigurasi, hasil pemeriksaan, dan catatan operasi dari home lab pribadi.</p>
             </div>
         </section>
 
         <section class="px-8 md:px-20 pb-12">
             <form action="<?= site_url('docs') ?>" method="get" class="grid grid-cols-1 md:grid-cols-12 gap-4">
-                <label for="docs_search" class="sr-only">Search documentation</label>
-                <input id="docs_search" type="search" name="q" value="<?= esc($query) ?>" placeholder="Search documentation" class="md:col-span-7 border bg-white px-5 py-4 outline-none focus:border-black">
+                <label for="docs_search" class="sr-only">Cari dokumentasi</label>
+                <input id="docs_search" type="search" name="q" value="<?= esc($query) ?>" placeholder="Cari dokumentasi" class="md:col-span-7 border bg-white px-5 py-4 outline-none focus:border-black">
                 <label for="docs_category" class="sr-only">Documentation category</label>
                 <select id="docs_category" name="category" class="md:col-span-3 border bg-white px-5 py-4 outline-none focus:border-black">
-                    <option value="">All categories</option>
+                    <option value="">Semua kategori</option>
                     <?php foreach ($categories as $item): ?>
                         <option value="<?= esc($item['category']) ?>" <?= $category === $item['category'] ? 'selected' : '' ?>><?= esc($item['category']) ?></option>
                     <?php endforeach; ?>
                 </select>
-                <button type="submit" class="md:col-span-2 bg-black text-white px-6 py-4 text-sm font-semibold hover:bg-zinc-800 transition">Search</button>
+                <button type="submit" class="md:col-span-2 bg-black text-white px-6 py-4 text-sm font-semibold hover:bg-zinc-800 transition">Cari</button>
             </form>
         </section>
 

@@ -10,6 +10,7 @@
 /writable/**
 !/writable/**/
 !/writable/**/index.html
+/writable/review/
 /public/uploads/**
 !/public/uploads/**/
 !/public/uploads/**/index.html

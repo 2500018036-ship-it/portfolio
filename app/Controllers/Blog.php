@@ -19,7 +19,8 @@ class Blog extends BaseController
         $model = (new BlogPostModel())
             ->select('blog_posts.*, blog_categories.name AS category_name, blog_categories.slug AS category_slug')
             ->join('blog_categories', 'blog_categories.id = blog_posts.category_id', 'left')
-            ->where('blog_posts.status', 'published');
+            ->where('blog_posts.status', 'published')
+            ->where('blog_posts.is_dummy', 0);
 
         if ($query !== '') {
             $model->groupStart()
@@ -46,11 +47,13 @@ class Blog extends BaseController
 
         return view('public/blog/index', array_merge($viewDefaults, [
             'title'           => 'Blog | ' . $siteTitle,
-            'metaDescription' => 'Technical articles, notes, and portfolio updates.',
+            'metaDescription' => 'Artikel Muhammad Azril Achdi tentang home lab, VLAN MikroTik dan Cisco, Technitium DNS, Debian, Docker, serta WireGuard Azure.',
             'canonicalUrl'    => site_url('blog'),
             'siteTitle'       => $siteTitle,
             'posts'           => $posts,
-            'categories'      => (new BlogCategoryModel())->where('status', 'active')->orderBy('sort_order', 'ASC')->orderBy('name', 'ASC')->findAll(),
+            'categories'      => (new BlogCategoryModel())
+                ->where('status', 'active')->where('is_dummy', 0)
+                ->orderBy('sort_order', 'ASC')->orderBy('name', 'ASC')->findAll(),
             'tagsByPost'      => $this->tagsByPost(array_column($posts, 'id')),
             'query'           => $query,
             'category'        => $category,
@@ -64,6 +67,7 @@ class Blog extends BaseController
             ->join('blog_categories', 'blog_categories.id = blog_posts.category_id', 'left')
             ->where('blog_posts.slug', $slug)
             ->where('blog_posts.status', 'published')
+            ->where('blog_posts.is_dummy', 0)
             ->first();
 
         if (! $post) {
@@ -106,6 +110,7 @@ class Blog extends BaseController
             ->join('blog_tags', 'blog_tags.id = blog_post_tags.blog_tag_id')
             ->whereIn('blog_post_tags.blog_post_id', $postIds)
             ->where('blog_tags.status', 'active')
+            ->where('blog_tags.is_dummy', 0)
             ->findAll();
 
         $tags = [];
@@ -124,6 +129,7 @@ class Blog extends BaseController
             ->join('blog_tags', 'blog_tags.id = blog_post_tags.blog_tag_id')
             ->where('blog_post_tags.blog_post_id', $postId)
             ->where('blog_tags.status', 'active')
+            ->where('blog_tags.is_dummy', 0)
             ->findAll();
     }
 
@@ -133,7 +139,8 @@ class Blog extends BaseController
             ->select('blog_posts.*, blog_categories.name AS category_name')
             ->join('blog_categories', 'blog_categories.id = blog_posts.category_id', 'left')
             ->where('blog_posts.id !=', $post['id'])
-            ->where('blog_posts.status', 'published');
+            ->where('blog_posts.status', 'published')
+            ->where('blog_posts.is_dummy', 0);
 
         if ($post['category_id']) {
             $model->where('blog_posts.category_id', $post['category_id']);
@@ -159,6 +166,7 @@ class Blog extends BaseController
     {
         return (new DocumentationModel())
             ->where('status', 'published')
+            ->where('is_dummy', 0)
             ->orderBy('published_at', 'DESC')
             ->limit(3)
             ->findAll();
@@ -168,6 +176,7 @@ class Blog extends BaseController
     {
         return (new ProjectModel())
             ->where('status', 'published')
+            ->where('is_dummy', 0)
             ->where('is_featured', 1)
             ->orderBy('sort_order', 'ASC')
             ->limit(3)
@@ -178,6 +187,7 @@ class Blog extends BaseController
     {
         return (new LabModel())
             ->where('status', 'published')
+            ->where('is_dummy', 0)
             ->where('is_featured', 1)
             ->orderBy('sort_order', 'ASC')
             ->limit(3)
